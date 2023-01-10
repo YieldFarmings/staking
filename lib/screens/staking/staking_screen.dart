@@ -1,3 +1,4 @@
+import 'package:bsbot/screens/staking/staking_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,7 @@ class StakingScreen extends StatefulWidget {
 }
 
 class _StakingState extends State<StakingScreen> {
-  late SwapBloc _swapBloc;
+  late StakingBloc _stakingBloc;
   String address = '';
   bool isConnected = false;
   final titles = ["30", "90", "120","180","260"];
@@ -24,15 +25,14 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   void initState() {
-    _swapBloc = SwapBloc(
-      swapRepository: context.read(),
+    _stakingBloc = StakingBloc(
+      stakingRepository: context.read(),
     )
-      ..add(SwapCheck());
+      ..add(StakingCheck());
 
-    _swapBloc.stream.listen((state) {
-      if (state is SwapConnected) {
+    _stakingBloc.stream.listen((state) {
+      if (state is StakingConnected) {
         setState(() {
-          address = state.address;
           isConnected = true;
         });
       }
@@ -42,8 +42,8 @@ class _StakingState extends State<StakingScreen> {
 
       @override
   Widget build(BuildContext context) {
-    return BlocProvider<SwapBloc>(
-      create: (BuildContext context) => _swapBloc,
+    return BlocProvider<StakingBloc>(
+      create: (BuildContext context) => _stakingBloc,
       child: Scaffold(
         backgroundColor: const Color(0xFF000222),
         body: Container(
@@ -71,7 +71,7 @@ class _StakingState extends State<StakingScreen> {
               if (address.isEmpty) ...[
                     InkWell(
                       onTap: () {
-                        _swapBloc.add(SwapConnectWallet());
+                        _stakingBloc.add(StakingConnectWallet());
                       },
                       borderRadius: BorderRadius.circular(15.r),
                       child: Container(

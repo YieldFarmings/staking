@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_tabbar_widget/rounded_tabbar_widget.dart';
 
+import 'Repositories/staking_repository.dart';
+import 'Services/staking_service.dart';
 import 'common_widget/bottom_navigation_bar.dart';
 
 void main() {
@@ -42,6 +44,11 @@ class Main extends StatelessWidget {
           RepositoryProvider(
             create: (_) => SwapRepository(
               swapService: SwapService(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => StakingRepository(
+              stakingService: StakingService(),
             ),
           ),
         ],
