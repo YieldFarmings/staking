@@ -33,9 +33,9 @@ class StakingConnected extends StakingState {
   List<Object?> get props => [];
 }
 
-class SwapPreviewSuccess extends StakingState {
+class StakingPreviewSuccess extends StakingState {
   final double previewAmount;
-  const SwapPreviewSuccess({required this.previewAmount});
+  const StakingPreviewSuccess({required this.previewAmount});
 
   @override
   List<Object?> get props => [previewAmount];

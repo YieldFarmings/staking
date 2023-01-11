@@ -22,7 +22,7 @@ class _StakingState extends State<StakingScreen> {
   bool isConnected = false;
   final titles = ["30", "90", "120","180","260"];
   final subtitles = ["10", "25", "40", "55", "75"];
-
+  final TextEditingController _bsbotController = TextEditingController();
   @override
   void initState() {
     _stakingBloc = StakingBloc(
@@ -36,8 +36,23 @@ class _StakingState extends State<StakingScreen> {
           isConnected = true;
         });
       }
+      if (state is StakingPreviewSuccess) {
+        _bsbotController.text = state.previewAmount.toString();
+      }
+      if (state is StakingError) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+      }
+
+      if (state is StakingLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
     }
     );
+    _bsbotController.addListener(() {
+      if (_bsbotController.text.isNotEmpty) {
+        _stakingBloc.add(StakingPreview(amount: double.parse(_bsbotController.text), from: 'bsbot'));
+      }
+    });
   }
 
       @override
@@ -213,6 +228,7 @@ class _StakingState extends State<StakingScreen> {
                     ),
                     Expanded(
                               child: TextField(
+                                controller: _bsbotController,
                                 textAlign: TextAlign.start,
                                 cursorColor: Colors.white,
                                 style: const TextStyle(
@@ -300,6 +316,11 @@ class _StakingState extends State<StakingScreen> {
               SizedBox(height:105.h,),
               InkWell(
                 onTap: () {
+                  if (_bsbotController.text.isNotEmpty) {
+                    if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+                      _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), from:'bsbot'));
+                    }
+                  }
                 },
                 borderRadius: BorderRadius.circular(5.r),
                 child: Container(

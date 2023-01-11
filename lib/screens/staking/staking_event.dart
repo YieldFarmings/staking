@@ -24,11 +24,11 @@ class StakingAmount extends StakingEvent {
   List<Object?> get props => [amount];
 }
 
-class SwapPreview extends StakingEvent {
+class StakingPreview extends StakingEvent {
   final double amount;
   final String from;
 
-  const SwapPreview({
+  const StakingPreview({
     required this.amount,
     required this.from,
   });
