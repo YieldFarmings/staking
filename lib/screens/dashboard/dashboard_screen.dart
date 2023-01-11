@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_tabbar_widget/rounded_tabbar_widget.dart';
 
 import '../../common_widget/bottom_navigation_bar.dart';
+import '../staking/staking_bloc.dart';
 import '../swaping/bloc/swap_bloc.dart';
 import '../swaping/swaping_screen.dart';
 
@@ -16,30 +17,29 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoardScreen> {
-  late SwapBloc _swapBloc;
+  late StakingBloc _stakingBloc;
   bool isConnected = false;
-
 
   @override
   void initState() {
-    _swapBloc = SwapBloc(
-      swapRepository: context.read(),
+    _stakingBloc = StakingBloc(
+      stakingRepository: context.read(),
     )
-      ..add(SwapCheck());
+      ..add(StakingCheck());
 
-    _swapBloc.stream.listen((state) {
-      if (state is SwapConnected) {
+    _stakingBloc.stream.listen((state) {
+      if (state is StakingConnected) {
         setState(() {
           isConnected = true;
         });
       }
-    }
-    );
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SwapBloc>(
-        create: (BuildContext context) => _swapBloc,
+    return BlocProvider<StakingBloc>(
+        create: (BuildContext context) => _stakingBloc,
       child:Scaffold(
         backgroundColor: const Color(0xFF000222),
         body: Container(
@@ -66,7 +66,7 @@ class _DashBoardState extends State<DashBoardScreen> {
     ),
       InkWell(
         onTap: () {
-    _swapBloc.add(SwapConnectWallet());
+    _stakingBloc.add(StakingConnectWallet());
         },
         borderRadius: BorderRadius.circular(15.r),
         child: Container(

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_tabbar_widget/rounded_tabbar_widget.dart';
 
 import '../../common_widget/bottom_navigation_bar.dart';
+import '../staking/staking_bloc.dart';
 import '../swaping/bloc/swap_bloc.dart';
 import '../swaping/swaping_screen.dart';
 
@@ -16,7 +17,7 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatingState extends State<CalculatorScreen> {
-  late SwapBloc _swapBloc;
+  late StakingBloc _stakingBloc;
   String dropdownValue = 'Bsbot';
   String dropdownValues = '30 days';
   bool isConnected = false;
@@ -24,16 +25,23 @@ class _CalculatingState extends State<CalculatorScreen> {
 
   @override
   void initState() {
-    _swapBloc = SwapBloc(
-      swapRepository: context.read(),
+    _stakingBloc = StakingBloc(
+      stakingRepository: context.read(),
     )
-      ..add(SwapCheck());
+      ..add(StakingCheck());
 
-    _swapBloc.stream.listen((state) {
-      if (state is SwapConnected) {
+    _stakingBloc.stream.listen((state) {
+      if (state is StakingConnected) {
         setState(() {
           isConnected = true;
         });
+      }
+      if ( state is StakingError) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+      }
+
+      if (state is StakingLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
     }
     );
@@ -41,8 +49,8 @@ class _CalculatingState extends State<CalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SwapBloc>(
-      create: (BuildContext context) => _swapBloc,
+    return BlocProvider<StakingBloc>(
+      create: (BuildContext context) => _stakingBloc,
       child: Scaffold(
         backgroundColor: const Color(0xFF000222),
         body: Container(
@@ -69,7 +77,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        _swapBloc.add(SwapConnectWallet());
+                        _stakingBloc.add(StakingConnectWallet());
                       },
                       borderRadius: BorderRadius.circular(15.r),
                       child: Container(
