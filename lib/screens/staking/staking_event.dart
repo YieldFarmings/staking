@@ -32,8 +32,8 @@ class StakingPreview extends StakingEvent {
     required this.amount,
     required this.from,
   });
-
   @override
-  List<Object?> get props => [amount, from];
+  List<Object?> get props => [amount,from];
 }
+
 

@@ -41,6 +41,18 @@ class StakingPreviewSuccess extends StakingState {
   List<Object?> get props => [previewAmount];
 }
 
+class StakingTotalBalance extends StakingState {
+  final double amount;
+
+  const StakingTotalBalance({
+    required this.amount,
+  });
+
+
+  @override
+  List<Object?> get props => [amount];
+}
+
 class StakingSuccess extends StakingState {
   final String msg;
   const StakingSuccess({required this.msg});

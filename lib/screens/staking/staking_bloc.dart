@@ -73,33 +73,19 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
   FutureOr<void> _mapStakingAmountToState(StakingAmount event, Emitter<StakingState> emit) async {
     emit(const StakingLoading(msg: "Staking.."));
 
-    var userAdd = await web3provider.getSigner().getAddress();
-    late Contract erc20;
+    final signer = provider!.getSigner();
 
-    if (event.from == 'bsbot') {
-      erc20 = erc20Contract(contractAddress:'0x8d0bD17F6B4484b06A1Bb581EF6B6526c515e4d0');
-      BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd]);
+// Get account balance
+    BigInt total=signer.getBalance() as BigInt;
+    double amount=total as double;
+    emit(StakingTotalBalance(amount:amount));
+    // 315752957360231815
 
-      if (allowance >= BigInt.from(10 * pow(10, 18))) {
-        try {
-          emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
-          TransactionResponse data = await stakingContract().send('swapBSBOTTOUSDT', [BigInt.from(event.amount * pow(10, 18))]);
-          emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-        } catch (e) {
-          emit(StakingError(error: e.toString()));
+// Get account sent transaction count (not contract call)
+    await signer.getTransactionCount(BlockTag.latest); // 1
         }
-      } else {
-        try {
-          emit(const StakingLoading(msg: "Waiting for Approval...."));
-          TransactionResponse data = await erc20.send('approve', [BigInt.from(event.amount * pow(10, 40))]);
-          _mapStakingAmountToState(event, emit);
-        } catch (e) {
-          emit(StakingError(error: e.toString()));
-          return;
-        }
-      }
-    }
-  }
+
+
 
   FutureOr<void> _mapStakingPreviewToState(StakingPreview event, Emitter<StakingState> emit) async {
       BigInt previewAmount = await stakingContract().call<BigInt>("usdtSwapAmount", [BigInt.from(event.amount * pow(10, 18))]);

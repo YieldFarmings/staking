@@ -46,6 +46,9 @@ class _StakingState extends State<StakingScreen> {
       if (state is StakingLoading) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
+      if (state is StakingTotalBalance) {
+        _bsbotController.text = state.amount.toString();
+      }
     }
     );
     _bsbotController.addListener(() {
@@ -190,7 +193,7 @@ class _StakingState extends State<StakingScreen> {
                     color: Colors.white,
                     fontSize: 18.sp,
                   ),),
-                  Text('My balance : 0.000 bsbot',style: TextStyle(
+                  Text('My balance :bsbot',style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.sp,
                   ),),
