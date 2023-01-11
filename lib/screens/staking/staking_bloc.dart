@@ -68,4 +68,11 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
       }
     }
   }
+  Contract stakingContract() {
+    String contractAddress = "0x8d0bD17F6B4484b06A1Bb581EF6B6526c515e4d0";
+    var stakingAbi = '';
+    final jsonStakingInterface = Interface(stakingAbi);
+    final contract = Contract(contractAddress, jsonStakingInterface, web3provider.getSigner());
+    return contract;
+  }
 }

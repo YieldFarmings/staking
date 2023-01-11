@@ -11,5 +11,29 @@ class StakingCheck extends StakingEvent {
   @override
   List<Object?> get props => [];
 }
+class StakingAmount extends StakingEvent {
+  final double amount;
+  final String from;
 
+  const StakingAmount({
+    required this.amount,
+    required this.from,
+  });
+
+  @override
+  List<Object?> get props => [amount];
+}
+
+class SwapPreview extends StakingEvent {
+  final double amount;
+  final String from;
+
+  const SwapPreview({
+    required this.amount,
+    required this.from,
+  });
+
+  @override
+  List<Object?> get props => [amount, from];
+}
 
