@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bsbot/screens/staking/staking_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +22,18 @@ class _StakingState extends State<StakingScreen> {
   late StakingBloc _stakingBloc;
   String address = '';
   bool isConnected = false;
+  bool selected = false;
+  String connect="Connect Wallet";
+  final ScreenUtil _screenUtil = ScreenUtil();
+  final stakingAddress=['0x678DD16C17A410A50fe23790C421ee931dC37b7D','0x3AcB17FE5380B58c1D9edF82469288059A745c01','0xda7b3B56A4549e824487179ebfb97738Dcb50e74','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
   final titles = ["30", "90", "120","180","260"];
   final subtitles = ["10", "25", "40", "55", "75"];
+  late int tappedIndex;
+
   final TextEditingController _bsbotController = TextEditingController();
   @override
   void initState() {
+    tappedIndex = 0;
     _stakingBloc = StakingBloc(
       stakingRepository: context.read(),
     )
@@ -33,6 +42,7 @@ class _StakingState extends State<StakingScreen> {
     _stakingBloc.stream.listen((state) {
       if (state is StakingConnected) {
         setState(() {
+          address = state.address;
           isConnected = true;
         });
       }
@@ -49,6 +59,9 @@ class _StakingState extends State<StakingScreen> {
       if (state is StakingTotalBalance) {
         _bsbotController.text = state.amount.toString();
       }
+      if (state is StakingConnected) {
+        connect=state.connect;
+      }
     }
     );
     _bsbotController.addListener(() {
@@ -56,6 +69,7 @@ class _StakingState extends State<StakingScreen> {
         _stakingBloc.add(StakingPreview(amount: double.parse(_bsbotController.text), from: 'bsbot'));
       }
     });
+    super.initState();
   }
 
       @override
@@ -86,38 +100,71 @@ class _StakingState extends State<StakingScreen> {
                       'assets/images/bsbot_logo.png',
                       scale: 3,
                     ),
-              if (address.isEmpty) ...[
-                    InkWell(
-                      onTap: () {
-                        _stakingBloc.add(StakingConnectWallet());
-                      },
-                      borderRadius: BorderRadius.circular(15.r),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15.w,
-                          vertical: 15.h,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFF3C3D99),
-                              Color(0xFF41275B),
-                            ],
+                    if (address.isEmpty) ...[
+                      InkWell(
+                        onTap: () {
+                          _stakingBloc.add(StakingConnectWallet());
+                        },
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15.w,
+                            vertical: 15.h,
                           ),
-                          borderRadius: BorderRadius.circular(30.r),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Connect Wallet',
-                            style: TextStyle(
-                              color: Colors.white,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF3C3D99),
+                                Color(0xFF41275B),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Connect Wallet',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
+                    if (address.isNotEmpty) ...[
+                      Container(
+                        width: _screenUtil.screenWidth / 10,
+                        height: 43.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                          ),
+                          borderRadius: BorderRadius.circular(14.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 5.h, bottom: 5.w),
+                              child: CircleAvatar(
+                                foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
+                            FittedBox(
+                              child: Text(
+                                '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
                   ],
-                ],
                 ),
                 Container(
                   width:450.w,
@@ -137,9 +184,9 @@ class _StakingState extends State<StakingScreen> {
                       SizedBox(height:2.h,),
                       Text('TOTAL VALUE LOCKED', style: TextStyle(
                     color: Colors.white,fontSize:30.sp)),
-                      Text('3,00000',style: TextStyle(
+                      Text('\$342678',style: TextStyle(
                         color: Colors.white, fontSize:15.sp)),
-                      Text('3=1 BSBOT',style: TextStyle(
+                      Text('1 BSBOT = 10 XBSBOT',style: TextStyle(
                           color: Colors.white,fontSize:15.sp)),
                       SizedBox(height:10.h,),
                     ],
@@ -152,8 +199,11 @@ class _StakingState extends State<StakingScreen> {
                 SizedBox(height:10,),
                 Text('Total in Locked staking ',style: TextStyle(
                     color: Colors.white,fontSize:20.sp)),
-                Text('100000 BSBOT',style: TextStyle(
+                Text('883,953  BSBOT',style: TextStyle(
                     color:Color(0xFF89D0F3),fontSize:15.sp)),
+              Row(
+                mainAxisAlignment:MainAxisAlignment.center,
+                children:[
               Expanded(
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +243,7 @@ class _StakingState extends State<StakingScreen> {
                     color: Colors.white,
                     fontSize: 18.sp,
                   ),),
-                  Text('My balance :bsbot',style: TextStyle(
+                  Text('My balance :0.00 BSBOT',style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.sp,
                   ),),
@@ -293,19 +343,31 @@ class _StakingState extends State<StakingScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return  InkWell(
                       onTap: () {
+                        setState(() {
+                        tappedIndex=index;
+                        _stakingBloc.add(StakingAddress(address:stakingAddress[index]));
+
+                        });
                   },
                     child:Container(
-                      width:ScreenUtil().screenWidth / 16,
+                      width:ScreenUtil().screenWidth / 20,
                   height:ScreenUtil().screenHeight / 20,
                     child:Card(
+                      shape:tappedIndex == index
+                          ? new RoundedRectangleBorder(
+                          side: new BorderSide(color: Colors.purpleAccent, width: 2.0),
+                          borderRadius: BorderRadius.circular(4.0))
+                          : new RoundedRectangleBorder(
+                          side: new BorderSide(color: Colors.white, width: 2.0),
+                          borderRadius: BorderRadius.circular(4.0)),
                       color:Color(0xff373E65),
                       child:Column(
                         mainAxisAlignment:MainAxisAlignment.center,
                       children: [
-                        Text(titles[index]+" "+"days", style: TextStyle(
+                        Text(titles[index]+" "+"days", style: TextStyle(fontSize:15.sp,
                           color: Colors.white,
                         ),),
-                        Text(subtitles[index]+"%", style: TextStyle(
+                        Text(subtitles[index]+"%", style: TextStyle(fontSize:15.sp,
                           color: Colors.white,
                         ),),
                       ],
@@ -319,6 +381,7 @@ class _StakingState extends State<StakingScreen> {
               SizedBox(height:105.h,),
               InkWell(
                 onTap: () {
+
                   if (_bsbotController.text.isNotEmpty) {
                     if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
                       _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), from:'bsbot'));
@@ -358,10 +421,14 @@ class _StakingState extends State<StakingScreen> {
     ),
               ),
     ],
+
     ),
+            ],
+      ),
       ),
       ),
       ),
     );
   }
+
 }

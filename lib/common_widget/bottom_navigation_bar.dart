@@ -66,7 +66,7 @@ class _BottomNaviagtionBarState extends State<BottomNaviagtionBar> {
                   BottomNavigationBarItem(
                       label:'Swap',
                       icon:ImageIcon(
-                      AssetImage("images/swaping.png"),
+                      AssetImage("images/nnn.png"),
                       ),
                   ),
                   BottomNavigationBarItem(

@@ -129,7 +129,7 @@ class _DashBoardState extends State<DashBoardScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset('images/stake.png'),
+              Image.asset('images/eee.png'),
               Text(
                 'Stake',
                 style: TextStyle(
@@ -160,7 +160,7 @@ class _DashBoardState extends State<DashBoardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset('images/swap.png'),
+                      Image.asset('images/ppp.png'),
                       Text(
                         'Swap',
                         style: TextStyle(

@@ -19,7 +19,8 @@ class StakingLoading extends StakingState {
 
 class StakingError extends StakingState {
   final String error;
-  const StakingError({required this.error});
+  final String connect;
+  const StakingError({required this.error,required this.connect});
 
   @override
   List<Object?> get props => [];
@@ -27,7 +28,8 @@ class StakingError extends StakingState {
 
 class StakingConnected extends StakingState {
   final String address;
-  const StakingConnected({required this.address});
+  final String connect;
+  const StakingConnected({required this.address,required this.connect});
 
   @override
   List<Object?> get props => [];

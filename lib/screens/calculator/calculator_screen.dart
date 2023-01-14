@@ -20,8 +20,10 @@ class _CalculatingState extends State<CalculatorScreen> {
   late StakingBloc _stakingBloc;
   String dropdownValue = 'Bsbot';
   String dropdownValues = '30 days';
+  double percentage=0.0;
   bool isConnected = false;
-
+  final TextEditingController _amountController = TextEditingController();
+  bool isVisible=false;
 
   @override
   void initState() {
@@ -120,7 +122,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                     children: [
                       Container(
                         width: ScreenUtil().screenWidth / 3.5,
-                        height:ScreenUtil().screenHeight / 1.8,
+                        height:ScreenUtil().screenHeight / 1.7,
                         padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
@@ -161,15 +163,11 @@ class _CalculatingState extends State<CalculatorScreen> {
                                 dropdownColor:Color(0xff373E65),
                                 isExpanded: true,
                                 alignment:AlignmentDirectional.centerEnd,
-                                icon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white, // <-- SEE HERE
-                                ),
                                 underline: SizedBox(),
                                 // Step 3.
                                 value: dropdownValue,
                                 // Step 4.
-                                items: <String>['Bsbot', 'IBAT', 'BNB', 'CAKE']
+                                items: <String>['Bsbot']
                                     .map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -220,7 +218,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                                   // Step 3.
                                   value: dropdownValues,
                                   // Step 4.
-                                  items: <String>['30 days', '20 days', '10 days', '5 days']
+                                  items: <String>['30 days', '90 days', '120 days', '180 days','260 days']
                                       .map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -234,6 +232,17 @@ class _CalculatingState extends State<CalculatorScreen> {
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       dropdownValues = newValue!;
+                                      if(dropdownValues=="30 days")
+                                        percentage=int.parse(_amountController.text)*10/100;
+                                      else if(dropdownValues=="90 days")
+                                        percentage=int.parse(_amountController.text)*25/100;
+                                      else if(dropdownValues=="120 days")
+                                        percentage=int.parse(_amountController.text)*40/100;
+                                      else if(dropdownValues=="180 days")
+                                        percentage=int.parse(_amountController.text)*55/100;
+                                      else if(dropdownValues=="260 days")
+                                        percentage=int.parse(_amountController.text)*75/100;
+
                                     });
                                   },
                                 ),
@@ -251,6 +260,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                         SizedBox(
                           width: 495.w,
                           child: TextField(
+                            controller:_amountController,
                             autofocus: true,
                             textAlign: TextAlign.start,
                             cursorColor: Colors.white,
@@ -270,6 +280,9 @@ class _CalculatingState extends State<CalculatorScreen> {
                         SizedBox(height:45.h,),
                         InkWell(
                           onTap: () {
+                            setState(() {
+                              isVisible=true;
+                            });
                           },
                           borderRadius: BorderRadius.circular(5.r),
                           child: Container(
@@ -296,9 +309,13 @@ class _CalculatingState extends State<CalculatorScreen> {
                             ),
                           ),
                       ),
+                            SizedBox(height:20.h,),
+                            if(isVisible==true && _amountController.text.isNotEmpty && dropdownValues.isNotEmpty)
+                              text(),
             ],
                   ),
                 ),
+
               ],
             ),
           ),
@@ -307,6 +324,14 @@ class _CalculatingState extends State<CalculatorScreen> {
     ),
     ),
       ),
+    );
+  }
+  Widget text(){
+    return Row(
+      mainAxisAlignment:MainAxisAlignment.center,
+      children: [
+        Text('${_amountController.text} bsbot + ${percentage} xbsbot',style: TextStyle(color: Colors.white)),
+      ],
     );
   }
 }

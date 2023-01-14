@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:bsbot/screens/staking/staking_bloc.dart';
 import 'package:bsbot/screens/swaping/bloc/swap_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class _SwapScreenState extends State<SwapScreen> {
   bool previewSuccess = false;
   bool usdtTobsbot = false;
   final ScreenUtil _screenUtil = ScreenUtil();
+  late StakingBloc _stakingBloc;
   late SwapBloc _swapBloc;
   final TextEditingController _bsbotController = TextEditingController();
   final TextEditingController _usdtController = TextEditingController();
@@ -25,33 +27,33 @@ class _SwapScreenState extends State<SwapScreen> {
 
   @override
   void initState() {
-    _swapBloc = SwapBloc(
-      swapRepository: context.read(),
-    )..add(SwapCheck());
+    _stakingBloc = StakingBloc(
+      stakingRepository: context.read(),
+    )..add(StakingCheck());
 
-    _swapBloc.stream.listen((state) {
-      if (state is SwapConnected) {
+    _stakingBloc.stream.listen((state) {
+      if (state is StakingConnected) {
         setState(() {
           address = state.address;
           isConnected = true;
         });
       }
 
-      if (state is SwapPreviewSuccess) {
+      if (state is StakingPreviewSuccess) {
         _usdtController.text = state.previewAmount.toString();
       }
 
-      if (state is SwapSuccess) {
+      if (state is StakingSuccess) {
         _usdtController.text = '';
         _bsbotController.text = '';
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
 
-      if (state is SwapError) {
+      if (state is StakingError) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
       }
 
-      if (state is SwapLoading) {
+      if (state is StakingLoading) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
     });
@@ -96,7 +98,7 @@ class _SwapScreenState extends State<SwapScreen> {
                     if (address.isEmpty) ...[
                       InkWell(
                         onTap: () {
-                          _swapBloc.add(SwapConnectWallet());
+                          _stakingBloc.add(StakingConnectWallet());
                         },
                         borderRadius: BorderRadius.circular(15.r),
                         child: Container(

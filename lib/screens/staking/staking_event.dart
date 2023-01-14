@@ -24,6 +24,18 @@ class StakingAmount extends StakingEvent {
   List<Object?> get props => [amount];
 }
 
+class StakingAddress extends StakingEvent {
+  final address;
+
+
+  const StakingAddress({
+    required this.address,
+  });
+
+  @override
+  List<Object?> get props => [address];
+}
+
 class StakingPreview extends StakingEvent {
   final double amount;
   final String from;
