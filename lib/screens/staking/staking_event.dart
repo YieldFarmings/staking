@@ -3,37 +3,28 @@ part of 'staking_bloc.dart';
 abstract class StakingEvent extends Equatable {
   const StakingEvent();
 }
+
 class StakingConnectWallet extends StakingEvent {
   @override
   List<Object?> get props => [];
 }
+
 class StakingCheck extends StakingEvent {
   @override
   List<Object?> get props => [];
 }
+
 class StakingAmount extends StakingEvent {
   final double amount;
-  final String from;
+  final String poolAddress;
 
   const StakingAmount({
     required this.amount,
-    required this.from,
+    required this.poolAddress,
   });
 
   @override
   List<Object?> get props => [amount];
-}
-
-class StakingAddress extends StakingEvent {
-  final address;
-
-
-  const StakingAddress({
-    required this.address,
-  });
-
-  @override
-  List<Object?> get props => [address];
 }
 
 class StakingPreview extends StakingEvent {
@@ -45,7 +36,5 @@ class StakingPreview extends StakingEvent {
     required this.from,
   });
   @override
-  List<Object?> get props => [amount,from];
+  List<Object?> get props => [amount, from];
 }
-
-
