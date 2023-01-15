@@ -378,7 +378,7 @@ class _StakingState extends State<StakingScreen> {
                 },
               ),
                 ),
-              SizedBox(height:105.h,),
+              SizedBox(height:10.h,),
               InkWell(
                 onTap: () {
 
@@ -405,7 +405,7 @@ class _StakingState extends State<StakingScreen> {
                   ),
                   child: const Center(
                     child: Text(
-                      'Enable Staking',
+                      'Stake',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -413,9 +413,110 @@ class _StakingState extends State<StakingScreen> {
                   ),
                 ),
               ),
+              SizedBox(height:10.h,),
+              Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children:[
+              InkWell(
+                onTap: () {
 
-            ],
+                  if (_bsbotController.text.isNotEmpty) {
+                    if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+                      _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), from:'bsbot'));
+                    }
+                  }
+                },
+                borderRadius: BorderRadius.circular(5.r),
+                child: Container(
+                  width: ScreenUtil().screenWidth / 10,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15.w,
+                    vertical: 15.h,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF3C3D99),
+                        Color(0xFF41275B),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(5.r),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Claim',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
+              InkWell(
+                onTap: () {
+
+                  if (_bsbotController.text.isNotEmpty) {
+                    if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+                      _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), from:'bsbot'));
+                    }
+                  }
+                },
+                borderRadius: BorderRadius.circular(5.r),
+                child: Container(
+                  width: ScreenUtil().screenWidth / 10,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15.w,
+                    vertical: 15.h,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF3C3D99),
+                        Color(0xFF41275B),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(5.r),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'UnStake',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+                ],
+              ),
+                SizedBox(height:20.h,),
+                Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Reward earned:',style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    Text('29.4 Token',style: TextStyle(
+                      color: Colors.white,
+                    ),),
+
+                  ],
+                ),
+              SizedBox(height:20.h,),
+              Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Your staked amount:',style: TextStyle(
+                    color: Colors.white,
+                  ),),
+                  Text('100 Token',style: TextStyle(
+                    color: Colors.white,
+                  ),),
+
+                ],
+              ),
+                ],
+          ),
           ),
     ],
     ),
