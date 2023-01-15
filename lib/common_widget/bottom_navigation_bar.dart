@@ -65,10 +65,7 @@ class _BottomNaviagtionBarState extends State<BottomNaviagtionBar> {
                       icon: Icon(Icons.swap_calls)),
                   BottomNavigationBarItem(
                       label:'Swap',
-                      icon:ImageIcon(
-                      AssetImage("images/nnn.png"),
-                      ),
-                  ),
+                      icon:Icon(Icons.swap_horiz)),
                   BottomNavigationBarItem(
                       label:'Calculator',
                       icon: Icon(Icons.percent))
