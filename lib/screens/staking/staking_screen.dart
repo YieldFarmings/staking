@@ -24,6 +24,10 @@ class _StakingState extends State<StakingScreen> {
   final titles = ["30", "90", "120", "180", "260"];
   final subtitles = ["10", "25", "40", "55", "75"];
   late int tappedIndex;
+  late int amounts;
+  late String states="Stake";
+  int count=0;
+  String msg="";
 
   final TextEditingController _bsbotController = TextEditingController();
   @override
@@ -48,13 +52,19 @@ class _StakingState extends State<StakingScreen> {
       }
 
       if (state is StakingLoading) {
+        setState(() {
+          msg=state.msg;
+        });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
       if (state is StakingTotalBalance) {
         _bsbotController.text = state.amount.toString();
       }
-      if (state is StakingConnected) {
-        connect = state.connect;
+      if (state is StakingStatus) {
+        amounts = state.previewAmount;
+      }
+      if (state is StakingStatess) {
+        states = state.statess;
       }
     });
     _bsbotController.addListener(() {
@@ -64,6 +74,26 @@ class _StakingState extends State<StakingScreen> {
     });
     super.initState();
   }
+  Dialog leadDialog = Dialog(
+    child: Container(
+      height: 200.0,
+      width: 360.0,
+      color: Colors.blue,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text(
+              'Staking Successfull',
+              style:
+              TextStyle(color: Colors.black, fontSize: 22.0),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +309,12 @@ class _StakingState extends State<StakingScreen> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: TextField(
+                                      child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter some text';
+                                      }
+                                    },
                                         controller: _bsbotController,
                                         textAlign: TextAlign.start,
                                         cursorColor: Colors.white,
@@ -351,7 +386,7 @@ class _StakingState extends State<StakingScreen> {
                                         },
                                         child: Container(
                                           width: ScreenUtil().screenWidth / 20,
-                                          height: ScreenUtil().screenHeight / 20,
+                                          height: ScreenUtil().screenHeight / 35,
                                           child: Card(
                                             shape: tappedIndex == index ? new RoundedRectangleBorder(side: new BorderSide(color: Colors.purpleAccent, width: 2.0), borderRadius: BorderRadius.circular(4.0)) : new RoundedRectangleBorder(side: new BorderSide(color: Colors.white, width: 2.0), borderRadius: BorderRadius.circular(4.0)),
                                             color: Color(0xff373E65),
@@ -381,13 +416,16 @@ class _StakingState extends State<StakingScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 50.h,
+                                  height: 20.h,
                                 ),
                                 InkWell(
                                   onTap: () {
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
                                         _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
+                                        setState(() {
+                                          count++;
+                                        });
                                       }
                                     }
                                   },
@@ -406,9 +444,8 @@ class _StakingState extends State<StakingScreen> {
                                       ),
                                       borderRadius: BorderRadius.circular(5.r),
                                     ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Stake',
+                                    child:Center(
+                                      child: Text('Stake',
                                         style: TextStyle(
                                           color: Colors.white,
                                         ),
@@ -416,94 +453,42 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height:10.h,),
-                                Row(
-                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children:[
-                                    InkWell(
-                                      onTap: () {
 
-                                        if (_bsbotController.text.isNotEmpty) {
-                                          if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                            _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
-                                          }
-                                        }
-
-                                      },
-                                      borderRadius: BorderRadius.circular(5.r),
-                                      child: Container(
-                                        width: ScreenUtil().screenWidth / 10,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 15.w,
-                                          vertical: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color(0xFF3C3D99),
-                                              Color(0xFF41275B),
-                                            ],
-                                          ),
-                                          borderRadius: BorderRadius.circular(5.r),
-                                        ),
-                                        child: const Center(
-                                          child: Text(
-                                            'Claim',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-
-                                        if (_bsbotController.text.isNotEmpty) {
-                                          if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                            _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
-                                          }
-                                        }
-                                      },
-                                      borderRadius: BorderRadius.circular(5.r),
-                                      child: Container(
-                                        width: ScreenUtil().screenWidth / 10,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 15.w,
-                                          vertical: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color(0xFF3C3D99),
-                                              Color(0xFF41275B),
-                                            ],
-                                          ),
-                                          borderRadius: BorderRadius.circular(5.r),
-                                        ),
-                                        child: const Center(
-                                          child: Text(
-                                            'UnStake',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            ],
                             ),
-                          ),
-                        ],
                       ),
-                    ),
-                  ],
+          ],
+
                 ),
-              ],
+
             ),
-          ),
+          ],
+                ),
+      ],
+    ),
+    ),
+    ),
+      ),
+    );
+  }
+  Widget popUp(){
+    return Dialog(
+      child: Container(
+        height: 300.0,
+        width: 360.0,
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                'Staking Sucessfull',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+          ],
         ),
       ),
     );

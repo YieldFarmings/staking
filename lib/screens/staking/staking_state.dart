@@ -26,6 +26,22 @@ class StakingError extends StakingState {
   List<Object?> get props => [];
 }
 
+class StakingStatus extends StakingState {
+ final previewAmount;
+  const StakingStatus({required this.previewAmount});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class StakingStatess extends StakingState {
+  final statess;
+  const StakingStatess({required this.statess});
+
+  @override
+  List<Object?> get props => [];
+}
+
 class StakingConnected extends StakingState {
   final String address;
   final String connect;
