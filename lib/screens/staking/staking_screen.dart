@@ -24,10 +24,11 @@ class _StakingState extends State<StakingScreen> {
   final titles = ["30", "90", "120", "180", "260"];
   final subtitles = ["10", "25", "40", "55", "75"];
   late int tappedIndex;
-  late int amounts;
+  int amounts=0;
   String msg="";
   late Dialog leadDialog;
-  String success="";
+
+
 
   final TextEditingController _bsbotController = TextEditingController();
   @override
@@ -49,9 +50,10 @@ class _StakingState extends State<StakingScreen> {
       }
       if (state is StakingSuccess) {
         setState(() {
-          success="Success";
+          selected=true;
           msg=state.msg;
         });
+        textf();
         showDialog(
             context: context,
             builder: (
@@ -67,9 +69,6 @@ class _StakingState extends State<StakingScreen> {
           msg=state.msg;
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-      }
-      if (state is StakingTotalBalance) {
-        _bsbotController.text = state.amount.toString();
       }
       if (state is StakingStatus) {
         amounts = state.previewAmount;
@@ -111,7 +110,6 @@ class _StakingState extends State<StakingScreen> {
         ),
       ),
     );
-
     return BlocProvider<StakingBloc>(
       create: (BuildContext context) => _stakingBloc,
       child: Scaffold(
@@ -397,6 +395,7 @@ class _StakingState extends State<StakingScreen> {
                                         onTap: () {
                                           setState(() {
                                             tappedIndex = index;
+                                            selected=false;
                                           });
                                         },
                                         child: Container(
@@ -435,14 +434,21 @@ class _StakingState extends State<StakingScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if(msg=="Transaction Succeed with hash")
-                                    showDialog(
-                                        context: context,
-                                        builder: (
-                                            BuildContext context) => leadDialog);
+                                    if(msg=="Transaction Succeed with hash") {
+                                      setState(() {
+                                        selected=true;
+                                      });
+                                      showDialog(
+                                          context: context,
+                                          builder: (
+                                          BuildContext context)
+                                      =>
+                                      leadDialog
+                                    );
+                                    }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
                                       }
                                     }
                                   },
@@ -470,8 +476,12 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
-
-           ],
+                                SizedBox(height:20.h,),
+                                if(selected==true)
+                                  textf(),
+                                if(selected==false)
+                                  Container(),
+                              ],
 
                 ),
 
@@ -486,6 +496,84 @@ class _StakingState extends State<StakingScreen> {
     ),
     ),
       ),
+    );
+  }
+  Widget textf(){
+    return  Row(
+      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+      children:[
+        InkWell(
+          onTap: () {
+
+            if (_bsbotController.text.isNotEmpty) {
+              if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+                _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim"));
+              }
+            }
+
+          },
+          borderRadius: BorderRadius.circular(5.r),
+          child: Container(
+            width: ScreenUtil().screenWidth / 10,
+            padding: EdgeInsets.symmetric(
+              horizontal: 15.w,
+              vertical: 15.h,
+            ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF3C3D99),
+                  Color(0xFF41275B),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(5.r),
+            ),
+            child: const Center(
+              child: Text(
+                'Claim',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+
+            if (_bsbotController.text.isNotEmpty) {
+              if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+                _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking"));
+              }
+            }
+          },
+          borderRadius: BorderRadius.circular(5.r),
+          child: Container(
+            width: ScreenUtil().screenWidth / 10,
+            padding: EdgeInsets.symmetric(
+              horizontal: 15.w,
+              vertical: 15.h,
+            ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF3C3D99),
+                  Color(0xFF41275B),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(5.r),
+            ),
+            child: const Center(
+              child: Text(
+                'UnStake',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

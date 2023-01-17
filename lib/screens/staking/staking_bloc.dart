@@ -76,7 +76,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
   }
 
   FutureOr<void> _mapStakingAmountToState(StakingAmount event, Emitter<StakingState> emit) async {
-    emit(const StakingLoading(msg: "Staking.."));
 
     /// Check if user allowed contract to access funds.
     String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
@@ -85,20 +84,58 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     BigInt amount = BigInt.from(event.amount * pow(10, 18));
     erc20 = erc20Contract(contractAddress: bsbotAddress);
     BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd, event.poolAddress]);
+    Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
+    BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
 
     if (allowance >= BigInt.from(10 * pow(10, 18))) {
-      try {
-        emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+        if(previewAmount <= BigInt.from(0) || event.from=="Staking") {
+          emit(const StakingLoading(msg: "Staking.."));
+          try {
+            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
 
-        /// Create stacking contract
-        Contract staking = stakingContract(contractAddress: event.poolAddress);
-        TransactionResponse data = await staking.send('stake', [BigInt.from(event.amount * pow(10, 18))]);
-        emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-      } catch (e) {
-        emit(StakingError(error: e.toString(), connect: ''));
+            /// Create stacking contract
+            Contract staking = stakingContract(
+                contractAddress: event.poolAddress);
+            TransactionResponse data = await staking.send('stake', [BigInt.from(event.amount * pow(10, 18))]);
+            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+          } catch (e) {
+            emit(StakingError(error: e.toString(), connect: ''));
+          }
+        }
+        emit(StakingStatus(previewAmount: previewAmount));
+        if(previewAmount >= BigInt.from(0) && event.from=="unstaking"){
+          emit(const StakingLoading(msg: "UnStaking.."));
+
+          try {
+            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+
+            /// Create unstacking contract
+            Contract unStaking = stakingContract(contractAddress: event.poolAddress);
+            TransactionResponse data = await unStaking.send('withdraw', [BigInt.from(event.amount * pow(10, 18))]);
+            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+          } catch (e) {
+            emit(StakingError(error: e.toString(), connect: ''));
+          }
+        }
+        if(previewAmount >= BigInt.from(0) && event.from=="claim"){
+          emit(const StakingLoading(msg: "Claiming.."));
+
+          try {
+            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+
+            /// Create claim contract
+            Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
+            TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
+            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+          } catch (e) {
+            emit(StakingError(error: e.toString(), connect: ''));
+          }
+        }
+
       }
-    } else {
+    else {
       try {
+        emit(const StakingStatess(statess:"Approve"));
         emit(const StakingLoading(msg: "Waiting for Approval...."));
         TransactionResponse data = await erc20.send('approve', [event.poolAddress, BigInt.from(event.amount * pow(10, 40))]);
         _mapStakingAmountToState(event, emit);
@@ -109,7 +146,453 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     }
   }
 
-  FutureOr<void> _mapStakingPreviewToState(StakingPreview event, Emitter<StakingState> emit) async {}
+  FutureOr<void> _mapStakingPreviewToState(StakingPreview event, Emitter<StakingState> emit) async {
+
+  }
+
+Contract factoryContract({required String contractAddress})
+{
+  var factoryAbi='''
+  [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_token",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_factoryContract",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_rewards",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_decimals",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_rewardsDuration",
+				"type": "uint256"
+			}
+		],
+		"name": "createPool",
+		"outputs": [
+			{
+				"internalType": "contract Staking",
+				"name": "pool",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "addedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "increaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_poolId",
+				"type": "uint256"
+			}
+		],
+		"name": "poolDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "poolAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_factoryContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rewards",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_decimals",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rewardsDuration",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Factory.Pool",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "poolId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "userPool",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "userStake",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_poolId",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawRewardToken",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+  ''';
+  final jsonFactoryInterface = Interface(factoryAbi);
+  final contract = Contract(contractAddress, jsonFactoryInterface, web3provider.getSigner());
+  return contract;
+}
 
   Contract stakingContract({required String contractAddress}) {
     var stakingAbi =
