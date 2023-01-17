@@ -25,8 +25,6 @@ class _StakingState extends State<StakingScreen> {
   final subtitles = ["10", "25", "40", "55", "75"];
   late int tappedIndex;
   late int amounts;
-  late String states="Stake";
-  int count=0;
   String msg="";
   late Dialog leadDialog;
   String success="";
@@ -75,9 +73,6 @@ class _StakingState extends State<StakingScreen> {
       }
       if (state is StakingStatus) {
         amounts = state.previewAmount;
-      }
-      if (state is StakingStatess) {
-        states = state.statess;
       }
     });
     _bsbotController.addListener(() {
@@ -448,9 +443,6 @@ class _StakingState extends State<StakingScreen> {
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
                                         _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
-                                        setState(() {
-                                          count++;
-                                        });
                                       }
                                     }
                                   },
@@ -478,84 +470,7 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
-          //       if(success=="Success")
-          //         SizedBox(height:10.h,),
-          //       Row(
-          //         mainAxisAlignment:MainAxisAlignment.spaceBetween,
-          //         children:[
-          //           InkWell(
-          //             onTap: () {
-          //
-          //               if (_bsbotController.text.isNotEmpty) {
-          //                 if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-          //                   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
-          //                 }
-          //               }
-          //
-          //             },
-          //             borderRadius: BorderRadius.circular(5.r),
-          //             child: Container(
-          //               width: ScreenUtil().screenWidth / 10,
-          //               padding: EdgeInsets.symmetric(
-          //                 horizontal: 15.w,
-          //                 vertical: 15.h,
-          //               ),
-          //               decoration: BoxDecoration(
-          //                 gradient: const LinearGradient(
-          //                   colors: [
-          //                     Color(0xFF3C3D99),
-          //                     Color(0xFF41275B),
-          //                   ],
-          //                 ),
-          //                 borderRadius: BorderRadius.circular(5.r),
-          //               ),
-          //               child: const Center(
-          //                 child: Text(
-          //                   'Claim',
-          //                   style: TextStyle(
-          //                     color: Colors.white,
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //           InkWell(
-          //             onTap: () {
-          //
-          //               if (_bsbotController.text.isNotEmpty) {
-          //                 if ((double.tryParse(_bsbotController.text) ?? 0) > 0 && amounts > 0) {
-          //                   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
-          //                 }
-          //               }
-          //             },
-          //             borderRadius: BorderRadius.circular(5.r),
-          //             child: Container(
-          //               width: ScreenUtil().screenWidth / 10,
-          //               padding: EdgeInsets.symmetric(
-          //                 horizontal: 15.w,
-          //                 vertical: 15.h,
-          //               ),
-          //               decoration: BoxDecoration(
-          //                 gradient: const LinearGradient(
-          //                   colors: [
-          //                     Color(0xFF3C3D99),
-          //                     Color(0xFF41275B),
-          //                   ],
-          //                 ),
-          //                 borderRadius: BorderRadius.circular(5.r),
-          //               ),
-          //               child: const Center(
-          //                 child: Text(
-          //                   'UnStake',
-          //                   style: TextStyle(
-          //                     color: Colors.white,
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ],
-          //             ),
+
            ],
 
                 ),
