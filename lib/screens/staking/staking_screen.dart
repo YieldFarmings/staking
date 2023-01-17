@@ -28,6 +28,8 @@ class _StakingState extends State<StakingScreen> {
   late String states="Stake";
   int count=0;
   String msg="";
+  late Dialog leadDialog;
+  String success="";
 
   final TextEditingController _bsbotController = TextEditingController();
   @override
@@ -46,6 +48,17 @@ class _StakingState extends State<StakingScreen> {
       }
       if (state is StakingPreviewSuccess) {
         _bsbotController.text = state.previewAmount.toString();
+      }
+      if (state is StakingSuccess) {
+        setState(() {
+          success="Success";
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialog);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
       if (state is StakingError) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
@@ -74,29 +87,36 @@ class _StakingState extends State<StakingScreen> {
     });
     super.initState();
   }
-  Dialog leadDialog = Dialog(
-    child: Container(
-      height: 200.0,
-      width: 360.0,
-      color: Colors.blue,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Text(
-              'Staking Successfull',
-              style:
-              TextStyle(color: Colors.black, fontSize: 22.0),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+
+
 
   @override
   Widget build(BuildContext context) {
+    leadDialog = Dialog(
+      child: Container(
+        height: 200.0,
+        width: 360.0,
+        color: Colors.blue,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                'Staking Successfull',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+            TextButton(onPressed:(){
+              Navigator.of(context).pop();
+
+            }, child:Text('Close',style:TextStyle(color:Colors.white,fontSize:20),))
+          ],
+        ),
+      ),
+    );
+
     return BlocProvider<StakingBloc>(
       create: (BuildContext context) => _stakingBloc,
       child: Scaffold(
@@ -420,6 +440,11 @@ class _StakingState extends State<StakingScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
+                                    if(msg=="Transaction Succeed with hash")
+                                    showDialog(
+                                        context: context,
+                                        builder: (
+                                            BuildContext context) => leadDialog);
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
                                         _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
@@ -453,43 +478,98 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
-
-                            ],
-                            ),
-                      ),
-          ],
+          //       if(success=="Success")
+          //         SizedBox(height:10.h,),
+          //       Row(
+          //         mainAxisAlignment:MainAxisAlignment.spaceBetween,
+          //         children:[
+          //           InkWell(
+          //             onTap: () {
+          //
+          //               if (_bsbotController.text.isNotEmpty) {
+          //                 if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+          //                   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
+          //                 }
+          //               }
+          //
+          //             },
+          //             borderRadius: BorderRadius.circular(5.r),
+          //             child: Container(
+          //               width: ScreenUtil().screenWidth / 10,
+          //               padding: EdgeInsets.symmetric(
+          //                 horizontal: 15.w,
+          //                 vertical: 15.h,
+          //               ),
+          //               decoration: BoxDecoration(
+          //                 gradient: const LinearGradient(
+          //                   colors: [
+          //                     Color(0xFF3C3D99),
+          //                     Color(0xFF41275B),
+          //                   ],
+          //                 ),
+          //                 borderRadius: BorderRadius.circular(5.r),
+          //               ),
+          //               child: const Center(
+          //                 child: Text(
+          //                   'Claim',
+          //                   style: TextStyle(
+          //                     color: Colors.white,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //           InkWell(
+          //             onTap: () {
+          //
+          //               if (_bsbotController.text.isNotEmpty) {
+          //                 if ((double.tryParse(_bsbotController.text) ?? 0) > 0 && amounts > 0) {
+          //                   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex]));
+          //                 }
+          //               }
+          //             },
+          //             borderRadius: BorderRadius.circular(5.r),
+          //             child: Container(
+          //               width: ScreenUtil().screenWidth / 10,
+          //               padding: EdgeInsets.symmetric(
+          //                 horizontal: 15.w,
+          //                 vertical: 15.h,
+          //               ),
+          //               decoration: BoxDecoration(
+          //                 gradient: const LinearGradient(
+          //                   colors: [
+          //                     Color(0xFF3C3D99),
+          //                     Color(0xFF41275B),
+          //                   ],
+          //                 ),
+          //                 borderRadius: BorderRadius.circular(5.r),
+          //               ),
+          //               child: const Center(
+          //                 child: Text(
+          //                   'UnStake',
+          //                   style: TextStyle(
+          //                     color: Colors.white,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ],
+          //             ),
+           ],
 
                 ),
 
             ),
           ],
                 ),
-      ],
+          ),
+    ],
     ),
-    ),
-    ),
+    ],
       ),
-    );
-  }
-  Widget popUp(){
-    return Dialog(
-      child: Container(
-        height: 300.0,
-        width: 360.0,
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                'Staking Sucessfull',
-                style:
-                TextStyle(color: Colors.black, fontSize: 22.0),
-              ),
-            ),
-          ],
-        ),
+    ),
+    ),
       ),
     );
   }
