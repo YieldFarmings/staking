@@ -78,3 +78,19 @@ class StakingSuccess extends StakingState {
   @override
   List<Object?> get props => [msg];
 }
+
+class UnStakingSuccess extends StakingState {
+  final String msg;
+  const UnStakingSuccess({required this.msg});
+
+  @override
+  List<Object?> get props => [msg];
+}
+
+class ClaimSuccess extends StakingState {
+  final String msg;
+  const ClaimSuccess({required this.msg});
+
+  @override
+  List<Object?> get props => [msg];
+}

@@ -112,7 +112,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
             /// Create unstacking contract
             Contract unStaking = stakingContract(contractAddress: event.poolAddress);
             TransactionResponse data = await unStaking.send('withdraw', [BigInt.from(event.amount * pow(10, 18))]);
-            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+            emit(UnStakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
           } catch (e) {
             emit(StakingError(error: e.toString(), connect: ''));
           }
@@ -126,7 +126,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
             /// Create claim contract
             Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
             TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
-            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+            emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
           } catch (e) {
             emit(StakingError(error: e.toString(), connect: ''));
           }

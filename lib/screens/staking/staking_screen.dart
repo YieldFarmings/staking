@@ -27,6 +27,8 @@ class _StakingState extends State<StakingScreen> {
   int amounts=0;
   String msg="";
   late Dialog leadDialog;
+  late Dialog leadDialogs;
+  late Dialog leadDialogss;
 
 
 
@@ -58,6 +60,26 @@ class _StakingState extends State<StakingScreen> {
             context: context,
             builder: (
                 BuildContext context) => leadDialog);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is UnStakingSuccess) {
+        setState(() {
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialogs);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is ClaimSuccess) {
+        setState(() {
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialogss);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
       if (state is StakingError) {
@@ -96,8 +118,53 @@ class _StakingState extends State<StakingScreen> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(15.0),
-              child: Text(
-                'Staking Successfull',
+              child: Text('Staking Successfull',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+            TextButton(onPressed:(){
+              Navigator.of(context).pop();
+
+            }, child:Text('Close',style:TextStyle(color:Colors.white,fontSize:20),))
+          ],
+        ),
+      ),
+    );
+    leadDialogs = Dialog(
+      child: Container(
+        height: 200.0,
+        width: 360.0,
+        color: Colors.red,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text('UnStaking Successfull',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+            TextButton(onPressed:(){
+              Navigator.of(context).pop();
+
+            }, child:Text('Close',style:TextStyle(color:Colors.white,fontSize:20),))
+          ],
+        ),
+      ),
+    );
+    leadDialogss = Dialog(
+      child: Container(
+        height: 200.0,
+        width: 360.0,
+        color: Colors.purpleAccent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text('claim Successfull',
                 style:
                 TextStyle(color: Colors.black, fontSize: 22.0),
               ),
