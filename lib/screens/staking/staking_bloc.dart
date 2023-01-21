@@ -84,7 +84,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     BigInt amount = BigInt.from(event.amount * pow(10, 18));
     erc20 = erc20Contract(contractAddress: bsbotAddress);
     BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd, event.poolAddress]);
-    BigInt balance=await erc20.call<BigInt>('balanceOf', [userAdd, event.poolAddress]);
     Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
     BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
 
