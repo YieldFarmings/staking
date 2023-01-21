@@ -98,7 +98,7 @@ class _SwapScreenState extends State<SwapScreen> {
                     if (address.isEmpty) ...[
                       InkWell(
                         onTap: () {
-                          _stakingBloc.add(StakingConnectWallet());
+                      //    _stakingBloc.add(StakingConnectWallet());
                         },
                         borderRadius: BorderRadius.circular(15.r),
                         child: Container(

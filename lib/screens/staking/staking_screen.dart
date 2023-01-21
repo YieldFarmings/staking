@@ -21,18 +21,24 @@ class _StakingState extends State<StakingScreen> {
   String connect = "Connect Wallet";
   final ScreenUtil _screenUtil = ScreenUtil();
   final stakingAddress = ['0x3AcB17FE5380B58c1D9edF82469288059A745c01','0xda7b3B56A4549e824487179ebfb97738Dcb50e74','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
-  final titles = ["30", "90", "120", "180", "260"];
-  final subtitles = ["10", "25", "40", "55", "75"];
+  final titles = ["90", "120", "180", "260"];
+  final subtitles = ["25% APY", "40% APY", "55% APY", "75% APY"];
   late int tappedIndex;
   int amounts=0;
   String msg="";
   late Dialog leadDialog;
   late Dialog leadDialogs;
   late Dialog leadDialogss;
-
+  String dropdownValue = 'Bsbot';
+  String dropdownValues = '30 days';
+  double percentage=0.0;
+  int count=0;
+  final TextEditingController _amountController = TextEditingController();
+  bool isVisible=false;
 
 
   final TextEditingController _bsbotController = TextEditingController();
+
   @override
   void initState() {
     tappedIndex = 0;
@@ -203,109 +209,75 @@ class _StakingState extends State<StakingScreen> {
                       'assets/images/bsbot_logo.png',
                       scale: 3,
                     ),
-                    if (address.isEmpty) ...[
-                      InkWell(
-                        onTap: () {
-                          _stakingBloc.add(StakingConnectWallet());
-                        },
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 15.w,
-                            vertical: 15.h,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF3C3D99),
-                                Color(0xFF41275B),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Connect Wallet',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (address.isNotEmpty) ...[
-                      Container(
-                        width: _screenUtil.screenWidth / 8,
-                        height: 43.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                          ),
-                          borderRadius: BorderRadius.circular(14.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 5.h, bottom: 5.w),
-                              child: CircleAvatar(
-                                foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
-                                backgroundColor: Colors.white,
-                              ),
-                            ),
-                            FittedBox(
-                              child: Text(
-                                '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]
+                  //   if (address.isEmpty) ...[
+                  //     InkWell(
+                  //       onTap: () {
+                  //         _stakingBloc.add(StakingConnectWallet());
+                  //       },
+                  //       borderRadius: BorderRadius.circular(15.r),
+                  //       child: Container(
+                  //         padding: EdgeInsets.symmetric(
+                  //           horizontal: 15.w,
+                  //           vertical: 15.h,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           gradient: const LinearGradient(
+                  //             colors: [
+                  //               Color(0xFF3C3D99),
+                  //               Color(0xFF41275B),
+                  //             ],
+                  //           ),
+                  //           borderRadius: BorderRadius.circular(30.r),
+                  //         ),
+                  //         child: const Center(
+                  //           child: Text(
+                  //             'Connect Wallet',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  //   if (address.isNotEmpty) ...[
+                  //     Container(
+                  //       width: _screenUtil.screenWidth / 8,
+                  //       height: 43.h,
+                  //       decoration: BoxDecoration(
+                  //         border: Border.all(
+                  //           color: Colors.white,
+                  //         ),
+                  //         borderRadius: BorderRadius.circular(14.r),
+                  //       ),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //         children: [
+                  //           Padding(
+                  //             padding: EdgeInsets.only(top: 5.h, bottom: 5.w),
+                  //             child: CircleAvatar(
+                  //               foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
+                  //               backgroundColor: Colors.white,
+                  //             ),
+                  //           ),
+                  //           FittedBox(
+                  //             child: Text(
+                  //               '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
+                  //               style: TextStyle(
+                  //                 color: Colors.white,
+                  //                 fontSize: 16.sp,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ]
                   ],
                 ),
-                Container(
-                    width: 450.w,
-                    height: 160.h,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF246740),
-                          Color(0xFF1C696B),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Text('TOTAL VALUE LOCKED', style: TextStyle(color: Colors.white, fontSize: 30.sp)),
-                        Text('\$342678', style: TextStyle(color: Colors.white, fontSize: 15.sp)),
-                        Text('1 BSBOT = 10 XBSBOT', style: TextStyle(color: Colors.white, fontSize: 15.sp)),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text('LOCKED STACKING ', style: TextStyle(color: Colors.white, fontSize: 40.sp)),
-                SizedBox(
-                  height: 10,
-                ),
-                Text('Total in Locked staking ', style: TextStyle(color: Colors.white, fontSize: 20.sp)),
-                Text('883,953  BSBOT', style: TextStyle(color: Color(0xFF89D0F3), fontSize: 15.sp)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(height:0.h,),
+                Padding(padding:EdgeInsets.only(left:500.w,right:50.w,top:60.h),
+                child:Row(
                   children: [
                     Expanded(
                       child: Column(
@@ -314,7 +286,7 @@ class _StakingState extends State<StakingScreen> {
                         children: [
                           Container(
                             width: ScreenUtil().screenWidth / 3.5,
-                            height: ScreenUtil().screenHeight / 2,
+                            height: ScreenUtil().screenHeight / 1.3,
                             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
@@ -331,32 +303,6 @@ class _StakingState extends State<StakingScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  'STAKE BSBOT',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28.sp,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'Amount',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                    ),
-                                  ),
-                                  Text(
-                                    'My balance :0.00 BSBOT',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                    ),
-                                  ),
-                                ]),
                                 SizedBox(
                                   height: 10.h,
                                 ),
@@ -466,31 +412,42 @@ class _StakingState extends State<StakingScreen> {
                                           });
                                         },
                                         child: Container(
-                                          width: ScreenUtil().screenWidth / 20,
+
+                                          width: ScreenUtil().screenWidth / 16,
                                           height: ScreenUtil().screenHeight / 35,
                                           child: Card(
                                             shape: tappedIndex == index ? new RoundedRectangleBorder(side: new BorderSide(color: Colors.purpleAccent, width: 2.0), borderRadius: BorderRadius.circular(4.0)) : new RoundedRectangleBorder(side: new BorderSide(color: Colors.white, width: 2.0), borderRadius: BorderRadius.circular(4.0)),
                                             color: Color(0xff373E65),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  titles[index] + " " + "days",
-                                                  style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  subtitles[index] + "%",
-                                                  style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
+                                            child: Stack(
+                                            alignment:AlignmentDirectional.center,
+                                            children:[
+                                              if(tappedIndex != index )
+                                              Icon(
+                                            Icons.lock,
+                                              color: Colors.red,
+                                              size: 24.0,
                                             ),
+                                                Padding(padding:EdgeInsets.only(top:2.h),
+                                                child:Text(tappedIndex == index ?
+                                                  titles[index] + " " + "days":" ",
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                ),
+                                          Padding(padding:EdgeInsets.only(top:60.h),
+                                            child:Text(tappedIndex == index ?
+                                                  subtitles[index] : " ",
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                           ),
+                                              ],
+                                          ),
+                                        ),
                                         ),
                                       );
                                     },
@@ -526,13 +483,8 @@ class _StakingState extends State<StakingScreen> {
                                       vertical: 15.h,
                                     ),
                                     decoration: BoxDecoration(
-                                      gradient: const LinearGradient(
-                                        colors: [
-                                          Color(0xFF3C3D99),
-                                          Color(0xFF41275B),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(5.r),
+                                          color:Color(0xFF2196F3),
+                                      borderRadius: BorderRadius.circular(20.r),
                                     ),
                                     child:Center(
                                       child: Text('Stake',
@@ -548,15 +500,486 @@ class _StakingState extends State<StakingScreen> {
                                   textf(),
                                 if(selected==false)
                                   Container(),
-                              ],
+
+                                SizedBox(height:20.h,),
+
+                                           Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Choose Your assest',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.sp,
+                                              ),
+                                            ),
+                                            SizedBox(height:10.h,),
+                                            Container(
+                                              height:ScreenUtil().screenHeight /24 ,
+                                              width: ScreenUtil().screenWidth / 3.8,
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                color:Color(0xff373E65),
+                                              ),
+                                              child:Padding(padding:EdgeInsets.only(
+                                                right:20.w,
+                                                left:20.w,
+                                              ),
+                                                child:DropdownButton<String>(
+                                                  dropdownColor:Color(0xff373E65),
+                                                  isExpanded: true,
+                                                  alignment:AlignmentDirectional.centerEnd,
+                                                  underline: SizedBox(),
+                                                  // Step 3.
+                                                  value: dropdownValue,
+                                                  // Step 4.
+                                                  items: <String>['Bsbot']
+                                                      .map<DropdownMenuItem<String>>((String value) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child:Text(
+                                                        value,
+                                                        style: TextStyle(fontSize: 20,color:Colors.white),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  // Step 5.
+                                                  onChanged: (String? newValue) {
+                                                    setState(() {
+                                                      dropdownValue = newValue!;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Choose your Pull option',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.sp,
+                                              ),
+                                            ),
+                                            SizedBox(height:10.h,),
+                                            Container(
+                                              height:ScreenUtil().screenHeight /24 ,
+                                              width: ScreenUtil().screenWidth / 3.8,
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                color:Color(0xff373E65),
+                                              ),
+                                              child:Padding(padding:EdgeInsets.only(
+                                                right:20.w,
+                                                left:20.w,
+                                              ),
+                                                child:DropdownButton<String>(
+                                                  dropdownColor:Color(0xff373E65),
+                                                  isExpanded: true,
+                                                  alignment:AlignmentDirectional.centerEnd,
+                                                  icon: Icon(
+                                                    Icons.arrow_drop_down,
+                                                    color: Colors.white, // <-- SEE HERE
+                                                  ),
+                                                  underline: SizedBox(),
+                                                  // Step 3.
+                                                  value: dropdownValues,
+                                                  // Step 4.
+                                                  items: <String>['30 days','90 days', '120 days', '180 days','260 days']
+                                                      .map<DropdownMenuItem<String>>((String value) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child:Text(
+                                                        value,
+                                                        style: TextStyle(fontSize: 20,color:Colors.white),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  // Step 5.
+                                                  onChanged: (String? newValue) {
+                                                    setState(() {
+                                                      dropdownValues = newValue!;
+                                                      if(dropdownValues=="30 days")
+                                                        percentage=int.parse(_amountController.text)*10/100;
+                                                      else if(dropdownValues=="90 days")
+                                                        percentage=int.parse(_amountController.text)*25/100;
+                                                      else if(dropdownValues=="120 days")
+                                                        percentage=int.parse(_amountController.text)*40/100;
+                                                      else if(dropdownValues=="180 days")
+                                                        percentage=int.parse(_amountController.text)*55/100;
+                                                      else if(dropdownValues=="260 days")
+                                                        percentage=int.parse(_amountController.text)*75/100;
+
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height:20.h,),
+                                            Text(
+                                              'Enter your amount',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.sp,
+                                              ),
+                                            ),
+                                            SizedBox(height:10.h,),
+                                            SizedBox(
+                                              width: 495.w,
+                                              height:ScreenUtil().screenHeight /24 ,
+                                              child: TextField(
+                                                controller:_amountController,
+                                                autofocus: true,
+                                                textAlign: TextAlign.start,
+                                                cursorColor: Colors.white,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                                decoration:InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                  filled:true,
+                                                  fillColor:Color(0xff373E65),
+                                                  hintStyle: TextStyle(color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height:45.h,),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  isVisible=true;
+                                                });
+                                              },
+                                              borderRadius: BorderRadius.circular(5.r),
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 15.w,
+                                                  vertical: 15.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  gradient: const LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF3C3D99),
+                                                      Color(0xFF41275B),
+                                                    ],
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(15.r),
+                                                ),
+                                                child: const Center(
+                                                  child: Text(
+                                                    'Calculate',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height:20.h,),
+                                            if(isVisible==true && _amountController.text.isNotEmpty && dropdownValues.isNotEmpty)
+                                              text(),
+                                          ],
+                                        ),
+      ],
+                                      ),
 
                 ),
+                                  ],
+                                ),
+    // Row(
+    // mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    // children:[
+    // Text(
+    // 'Reward earned:',
+    // style: TextStyle(
+    // color: Colors.white,
+    // ),
+    // ),
+    // Text(
+    // '29.4 Token',
+    // style: TextStyle(
+    // color: Colors.white,
+    // ),
+    // ),
+    // ],
+    //
+    //             ),
+    //                           SizedBox(height:10.h,),
+    //                             Row(
+    //                             mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    //                             children:[
+    //                               Text(
+    //                                 'Your staked amount:',
+    //                                 style: TextStyle(
+    //                                   color: Colors.white,
+    //                                 ),
+    //                               ),
+    //                               Text(
+    //                                 '100 Token',
+    //                                 style: TextStyle(
+    //                                   color: Colors.white,
+    //                                 ),
+    //                               ),
+    //                             ],
+    //
+    //                           ),
+    //                             SizedBox(height:10.h,),
+    //                             Row(
+    //                               mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    //                               children:[
+    //                                 Text(
+    //                                   'Total token staked:',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                                 Text(
+    //                                   '602 Token',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                               ],
+    //
+    //                             ),
+    //                             SizedBox(height:10.h,),
+    //                             Row(
+    //                               mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    //                               children:[
+    //                                 Text(
+    //                                   'Reward Percent:',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                                 Text(
+    //                                   '10%',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                               ],
+    //
+    //                             ),
+    //                             SizedBox(height:10.h,),
+    //                             Row(
+    //                               mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    //                               children:[
+    //                                 Text(
+    //                                   'Total Duration:',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                                 Text(
+    //                                   '2 Minutes',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                               ],
+    //
+    //                             ),
+    //                             SizedBox(height:10.h,),
+    //                             Row(
+    //                               mainAxisAlignment:MainAxisAlignment.spaceBetween,
+    //                               children:[
+    //                                 Text(
+    //                                   'Pool Token:',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                                 Text(
+    //                                   'xffcy',
+    //                                   style: TextStyle(
+    //                                     color: Colors.white,
+    //                                   ),
+    //                                 ),
+    //                               ],
+    //
+    //                             ),
+    //                           ],
 
+                ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: ScreenUtil().screenWidth / 3.5,
+                            height: ScreenUtil().screenHeight / 2.5,
+                            padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF162035),
+                                  Color(0xFF162035).withOpacity(0.5),
+                                  Color(0xFF000222),
+                                ],
+                              ),
+                            ),
+child:Column(
+  children:[
+    if (address.isEmpty) ...[
+                                  InkWell(
+                                    onTap: () {
+                                      _stakingBloc.add(StakingConnectWallet());
+                                    },
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 15.w,
+                                        vertical: 15.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:Color(0xFF2196F3),
+                                        borderRadius: BorderRadius.circular(30.r),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Connect Wallet',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                if (address.isNotEmpty) ...[
+                                  Container(
+                                    width: _screenUtil.screenWidth / 8,
+                                    height: 43.h,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white,
+                                      ),
+                                      borderRadius: BorderRadius.circular(14.r),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 5.h, bottom: 5.w),
+                                          child: CircleAvatar(
+                                            foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
+                                            backgroundColor: Colors.white,
+                                          ),
+                                        ),
+                                        FittedBox(
+                                          child: Text(
+                                            '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+],
+
+SizedBox(height:30.h,),
+    if (address.isEmpty) ...[
+            Container(
+              width: ScreenUtil().screenWidth / 3.8,
+              height: ScreenUtil().screenHeight / 4,
+              padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r),
+               color: Color(0xff373E65),
+                ),
+              child:Center(
+              child:Text('connect Wallet to proceed',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ],
-                ),
-          ),
+            ),
     ],
+    if (address.isNotEmpty) ...[
+    Column(
+                                  children:[
+    Row(
+                                  mainAxisAlignment:MainAxisAlignment.spaceAround,
+                                  children:[
+                                    Text(
+                                      'Open Balance',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Total Locked',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+
+                                ),
+                                    SizedBox(height:10.h,),
+                                    Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceAround,
+    children:[
+                                    Container(
+                                      width: ScreenUtil().screenWidth / 9.8,
+                                      height: ScreenUtil().screenHeight / 7,
+                                      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff373E65),
+                                        borderRadius: BorderRadius.circular(20.r),
+                                      ),
+                                      child:Center(
+                                        child:Text('9650',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: ScreenUtil().screenWidth / 9.8,
+                                      height: ScreenUtil().screenHeight / 7,
+                                      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20.r),
+                                        color: Color(0xff373E65),
+                                      ),
+                                      child:Center(
+                                        child:Text('100 Token',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+
+                                ),
+
+
+    ],
+    ),
+                          ],
+      ],
+      ),
+    ),
+    ],
+    ),
+    ),
+    ],
+    ),
     ),
     ],
       ),
@@ -587,13 +1010,8 @@ class _StakingState extends State<StakingScreen> {
               vertical: 15.h,
             ),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF3C3D99),
-                  Color(0xFF41275B),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(5.r),
+              color:Color(0xFF2196F3),
+              borderRadius: BorderRadius.circular(15.r),
             ),
             child: const Center(
               child: Text(
@@ -622,13 +1040,8 @@ class _StakingState extends State<StakingScreen> {
               vertical: 15.h,
             ),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF3C3D99),
-                  Color(0xFF41275B),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(5.r),
+              color:Color(0xFF2196F3),
+              borderRadius: BorderRadius.circular(15.r),
             ),
             child: const Center(
               child: Text(
@@ -640,6 +1053,14 @@ class _StakingState extends State<StakingScreen> {
             ),
           ),
         ),
+      ],
+    );
+  }
+  Widget text(){
+    return Row(
+      mainAxisAlignment:MainAxisAlignment.center,
+      children: [
+        Text('${_amountController.text} bsbot + ${percentage} xbsbot',style: TextStyle(color: Colors.white)),
       ],
     );
   }

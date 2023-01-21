@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:bsbot/screens/staking/staking_screen.dart';
 import 'package:bsbot/screens/swaping/swaping_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +19,8 @@ class _BottomNaviagtionBarState extends State<BottomNaviagtionBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const _pages = <Widget>[
-    DashBoardScreen(),
     StakingScreen(),
     SwapScreen(),
-    CalculatorScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -38,7 +37,7 @@ class _BottomNaviagtionBarState extends State<BottomNaviagtionBar> {
         child: _pages.elementAt(_selectedIndex),
     ),
       bottomNavigationBar:Padding(
-        padding: EdgeInsets.only(left: 700.w,right:700.w,bottom:20.h),
+        padding: EdgeInsets.only(left: 850.w,right:850.w,bottom:20.h),
         child:Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -58,26 +57,20 @@ class _BottomNaviagtionBarState extends State<BottomNaviagtionBar> {
                 type: BottomNavigationBarType.fixed,
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                      label:'Dashboard',
-                      icon: Icon(Icons.dashboard)),
-                  BottomNavigationBarItem(
                       label:'Staking',
                       icon: Icon(Icons.swap_calls)),
                   BottomNavigationBarItem(
                       label:'Swap',
                       icon:Icon(Icons.swap_horiz)),
-                  BottomNavigationBarItem(
-                      label:'Calculator',
-                      icon: Icon(Icons.percent))
                 ],
                 currentIndex: _selectedIndex,
                 selectedItemColor: Colors.black,
                 onTap: _onItemTapped,
                 backgroundColor:Color(0xff999EF9),
+                ),
               ),
             )
         ),
-      ),
     );
   }
 }

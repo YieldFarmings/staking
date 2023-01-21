@@ -44,6 +44,10 @@ dependencies:
   adaptive_screen_flutter: ^0.0.5
   http_client: ^1.5.1
   rounded_tabbar_widget: ^0.0.2
+  bottom_animation: ^2.0.0
+  floating_bottom_navigation_bar: ^1.5.2
+  bottom_navy_bar: ^6.0.0
+
 
 dev_dependencies:
   flutter_test:
