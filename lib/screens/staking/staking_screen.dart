@@ -29,6 +29,7 @@ class _StakingState extends State<StakingScreen> {
   late Dialog leadDialog;
   late Dialog leadDialogs;
   late Dialog leadDialogss;
+  late Dialog leadDialogsss;
   String dropdownValue = 'Bsbot';
   String dropdownValues = '30 days';
   double percentage=0.0;
@@ -183,6 +184,29 @@ class _StakingState extends State<StakingScreen> {
         ),
       ),
     );
+    leadDialogsss = Dialog(
+      child: Container(
+        height: 200.0,
+        width: 360.0,
+        color: Colors.purpleAccent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text('PLease Enter Amount',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+            TextButton(onPressed:(){
+              Navigator.of(context).pop();
+
+            }, child:Text('Close',style:TextStyle(color:Colors.white,fontSize:20),))
+          ],
+        ),
+      ),
+    );
     return BlocProvider<StakingBloc>(
       create: (BuildContext context) => _stakingBloc,
       child: Scaffold(
@@ -276,7 +300,7 @@ class _StakingState extends State<StakingScreen> {
                   ],
                 ),
                 SizedBox(height:0.h,),
-                Padding(padding:EdgeInsets.only(left:500.w,right:50.w,top:60.h),
+                Padding(padding:EdgeInsets.only(left:500.w,right:50.w,top:20.h),
                 child:Row(
                   children: [
                     Expanded(
@@ -286,7 +310,7 @@ class _StakingState extends State<StakingScreen> {
                         children: [
                           Container(
                             width: ScreenUtil().screenWidth / 3.5,
-                            height: ScreenUtil().screenHeight / 1.3,
+                            height: ScreenUtil().screenHeight / 1.4,
                             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
@@ -353,6 +377,7 @@ class _StakingState extends State<StakingScreen> {
                                           ),
                                           filled: true,
                                           fillColor: Color(0xff373E65),
+                                          hintText:'Enter your amount',
                                           hintStyle: TextStyle(color: Colors.white),
                                         ),
                                       ),
@@ -424,7 +449,7 @@ class _StakingState extends State<StakingScreen> {
                                               if(tappedIndex != index )
                                               Icon(
                                             Icons.lock,
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               size: 24.0,
                                             ),
                                                 Padding(padding:EdgeInsets.only(top:2.h),
@@ -475,6 +500,15 @@ class _StakingState extends State<StakingScreen> {
                                         _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
                                       }
                                     }
+                                    else if(_bsbotController.text.isEmpty){
+                                      showDialog(
+                                          context: context,
+                                          builder: (
+                                              BuildContext context)
+                                          =>
+                                          leadDialogsss
+                                      );
+                                    }
                                   },
                                   borderRadius: BorderRadius.circular(5.r),
                                   child: Container(
@@ -500,13 +534,12 @@ class _StakingState extends State<StakingScreen> {
                                   textf(),
                                 if(selected==false)
                                   Container(),
-
-                                SizedBox(height:20.h,),
-
+                                           SizedBox(height:10.h),
                                            Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
+
                                             Text(
                                               'Choose Your assest',
                                               style: TextStyle(
@@ -681,6 +714,7 @@ class _StakingState extends State<StakingScreen> {
                                             SizedBox(height:20.h,),
                                             if(isVisible==true && _amountController.text.isNotEmpty && dropdownValues.isNotEmpty)
                                               text(),
+
                                           ],
                                         ),
       ],
@@ -967,6 +1001,48 @@ SizedBox(height:30.h,),
                                   ],
 
                                 ),
+SizedBox(height:20.h,),
+                                    InkWell(
+                                      onTap: () {
+
+                                      },
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 15.w,
+                                          vertical: 15.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color:Color(0xFF2196F3),
+                                          borderRadius: BorderRadius.circular(30.r),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            '90 Days - 100 Tokens',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height:10.h,),
+                                    Divider(
+    color:Color(0xff373E65),
+
+                                    ),
+                                    Padding(padding:EdgeInsets.only(right:300.w),
+                                    child:Text(
+                                      'Transactions History',
+                                      textAlign:TextAlign.start,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    ),
+
+
+                                    
 
 
     ],
