@@ -126,7 +126,8 @@ emit(StakingTotalBalance(amount: amountsd));
           emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
 
           /// Create claim contract
-          Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
+        //  Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
+          Contract claim = factoryContract(contractAddress:"0x06c0b421Fdb465352C6cD9cbf6086415A7A11748");
           TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
           emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
         } catch (e) {
