@@ -851,7 +851,7 @@ class _StakingState extends State<StakingScreen> {
                         children: [
                           Container(
                             width: ScreenUtil().screenWidth / 3.5,
-                            height: ScreenUtil().screenHeight / 2.5,
+                            height: ScreenUtil().screenHeight / 2.23,
                             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
@@ -927,8 +927,8 @@ child:Column(
                                   ),
 ],
 
-SizedBox(height:30.h,),
     if (address.isEmpty) ...[
+      SizedBox(height:70.h,),
             Container(
               width: ScreenUtil().screenWidth / 3.8,
               height: ScreenUtil().screenHeight / 4,
@@ -947,6 +947,7 @@ SizedBox(height:30.h,),
             ),
     ],
     if (address.isNotEmpty) ...[
+      SizedBox(height:30.h,),
     Column(
                                   children:[
     Row(
@@ -1036,7 +1037,7 @@ SizedBox(height:20.h,),
     color:Color(0xff373E65),
 
                                     ),
-                                    Padding(padding:EdgeInsets.only(right:300.w),
+                                    Padding(padding:EdgeInsets.only(right:345.w,top:20.h),
                                     child:Text(
                                       'Transactions History',
                                       textAlign:TextAlign.start,
@@ -1045,6 +1046,19 @@ SizedBox(height:20.h,),
                                       ),
                                     ),
                                     ),
+
+                                    SizedBox(height:10.h,),
+                                    Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                      children:[
+                                        Text('100 XBSBOT',   style: TextStyle(
+                                          color: Colors.white,
+                                        ),),
+                                        Text('12.02.23',style: TextStyle(
+                                          color: Colors.white,
+                                        ),),
+                                      ]
+                                    )
 
 
                                     
