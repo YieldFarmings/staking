@@ -34,6 +34,7 @@ class _StakingState extends State<StakingScreen> {
   String dropdownValues = '30 days';
   double percentage=0.0;
   int count=0;
+  double balance=0;
   final TextEditingController _amountController = TextEditingController();
   bool isVisible=false;
 
@@ -78,6 +79,11 @@ class _StakingState extends State<StakingScreen> {
             builder: (
                 BuildContext context) => leadDialogs);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is StakingTotalBalance) {
+        setState(() {
+          balance=state.amount;
+        });
       }
       if (state is ClaimSuccess) {
         setState(() {
@@ -310,7 +316,7 @@ class _StakingState extends State<StakingScreen> {
                         children: [
                           Container(
                             width: ScreenUtil().screenWidth / 3.5,
-                            height: ScreenUtil().screenHeight / 1.4,
+                            height: ScreenUtil().screenHeight / 1.3,
                             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
@@ -975,7 +981,7 @@ SizedBox(height:30.h,),
                                         borderRadius: BorderRadius.circular(20.r),
                                       ),
                                       child:Center(
-                                        child:Text('9650',
+                                        child:Text('${balance}',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),

@@ -45,9 +45,11 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         final accounts = await ethereum!.requestAccount();
         web3provider = Web3Provider.fromEthereum(ethereum!);
         address = accounts.first;
-
         if (accounts.isNotEmpty) {
           emit(StakingConnected(address: accounts.first, connect: "Connected"));
+          BigInt amount= await web3provider.getBalance(address);
+          double amountsd=amount.toDouble();
+emit(StakingTotalBalance(amount: amountsd));
         } else if (accounts.isEmpty) {
           emit(StakingConnected(address: accounts.first, connect: "Connect Wallet"));
         }
@@ -63,7 +65,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         await wc.connect();
         web3provider = Web3Provider.fromWalletConnect(wc);
         address = wc.accounts.first;
-
         if (wc.accounts.isNotEmpty) {
           emit(StakingConnected(address: wc.accounts.first, connect: "Connected"));
         } else if (wc.accounts.isEmpty) {

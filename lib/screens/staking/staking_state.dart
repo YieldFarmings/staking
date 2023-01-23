@@ -60,9 +60,9 @@ class StakingPreviewSuccess extends StakingState {
 }
 
 class StakingTotalBalance extends StakingState {
-  final double amount;
+  double amount;
 
-  const StakingTotalBalance({
+  StakingTotalBalance({
     required this.amount,
   });
 
