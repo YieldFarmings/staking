@@ -45,6 +45,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         final accounts = await ethereum!.requestAccount();
         web3provider = Web3Provider.fromEthereum(ethereum!);
         address = accounts.first;
+
         if (accounts.isNotEmpty) {
           emit(StakingConnected(address: accounts.first, connect: "Connected"));
           BigInt amount= await web3provider.getBalance(address);
@@ -89,8 +90,9 @@ emit(StakingTotalBalance(amount: amountsd));
 
 
 
+
     if (allowance >= BigInt.from(10 * pow(10, 18))) {
-      if(previewAmount <= BigInt.from(0) || event.from=="Staking") {
+      if(event.from=="Staking") {
         emit(const StakingLoading(msg: "Staking.."));
         try {
           emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
@@ -121,14 +123,13 @@ emit(StakingTotalBalance(amount: amountsd));
       }
       if(previewAmount >= BigInt.from(0) && event.from=="claim"){
         emit(const StakingLoading(msg: "Claiming.."));
-
         try {
           emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
 
           /// Create claim contract
-        //  Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
-          Contract claim = factoryContract(contractAddress:"0x06c0b421Fdb465352C6cD9cbf6086415A7A11748");
-          TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
+        // Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
+         Contract claim = factoryContract(contractAddress:"0x06c0b421Fdb465352C6cD9cbf6086415A7A11748");
+          TransactionResponse data = await claim.send('withdrawRewardToken',[event.poolId]);
           emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
         } catch (e) {
           emit(StakingError(error: e.toString(), connect: ''));
@@ -136,12 +137,12 @@ emit(StakingTotalBalance(amount: amountsd));
       }
 
     }
-    else {
+    else if(allowance <= BigInt.from(10 * pow(10, 0)) ){
       try {
-        emit(const StakingStatess(statess:"Approve"));
         emit(const StakingLoading(msg: "Waiting for Approval...."));
         TransactionResponse data = await erc20.send('approve', [event.poolAddress, BigInt.from(event.amount * pow(10, 40))]);
-        _mapStakingAmountToState(event, emit);
+        emit(const Approved(msg:"Approve"));
+        // _mapStakingAmountToState(event, emit);
       } catch (e) {
         emit(StakingError(error: e.toString(), connect: ''));
         return;

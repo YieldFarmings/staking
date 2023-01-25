@@ -20,6 +20,7 @@ class _StakingState extends State<StakingScreen> {
   bool selected = false;
   String connect = "Connect Wallet";
   final ScreenUtil _screenUtil = ScreenUtil();
+  final poolId=[1,2,3,4];
   final stakingAddress = ['0xB49791eBF15188c13B0577130D2B6506342d9bD2','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
   final titles = ["90", "120", "180", "260"];
   final subtitles = ["25% APY", "40% APY", "55% APY", "75% APY"];
@@ -35,6 +36,8 @@ class _StakingState extends State<StakingScreen> {
   double percentage=0.0;
   int count=0;
   double balance=0;
+  bool selecteds=false;
+  bool approve=false;
   final TextEditingController _amountController = TextEditingController();
   bool isVisible=false;
 
@@ -63,7 +66,6 @@ class _StakingState extends State<StakingScreen> {
           selected=true;
           msg=state.msg;
         });
-        textf();
         showDialog(
             context: context,
             builder: (
@@ -72,8 +74,10 @@ class _StakingState extends State<StakingScreen> {
       }
       if (state is UnStakingSuccess) {
         setState(() {
+          selecteds=true;
           msg=state.msg;
         });
+        textd();
         showDialog(
             context: context,
             builder: (
@@ -83,6 +87,11 @@ class _StakingState extends State<StakingScreen> {
       if (state is StakingTotalBalance) {
         setState(() {
           balance=state.amount;
+        });
+      }
+      if(state is Approved){
+        setState(() {
+         approve=true;
         });
       }
       if (state is ClaimSuccess) {
@@ -503,7 +512,7 @@ class _StakingState extends State<StakingScreen> {
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking",poolId:poolId[tappedIndex]));
                                       }
                                     }
                                     else if(_bsbotController.text.isEmpty){
@@ -527,7 +536,7 @@ class _StakingState extends State<StakingScreen> {
                                       borderRadius: BorderRadius.circular(20.r),
                                     ),
                                     child:Center(
-                                      child: Text('Stake',
+                                      child: Text(Approved==true ? 'Connect wallet to stake':'Stake',
                                         style: TextStyle(
                                           color: Colors.white,
                                         ),
@@ -593,6 +602,7 @@ class _StakingState extends State<StakingScreen> {
                                                 ),
                                               ),
                                             ),
+                                            SizedBox(height:10.h,),
                                             Text(
                                               'Choose your Pull option',
                                               style: TextStyle(
@@ -602,7 +612,7 @@ class _StakingState extends State<StakingScreen> {
                                             ),
                                             SizedBox(height:10.h,),
                                             Container(
-                                              height:ScreenUtil().screenHeight /24 ,
+                                              height:ScreenUtil().screenHeight /20,
                                               width: ScreenUtil().screenWidth / 3.8,
                                               padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
@@ -1087,43 +1097,44 @@ SizedBox(height:20.h,),
     return  Row(
       mainAxisAlignment:MainAxisAlignment.spaceBetween,
       children:[
+        if(selecteds==true)
+        InkWell(
+        onTap: () {
+
+      if (_bsbotController.text.isNotEmpty) {
+        if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+          _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim",poolId:poolId[tappedIndex]));
+        }
+      }
+
+    },
+    borderRadius: BorderRadius.circular(5.r),
+    child: Container(
+    width: ScreenUtil().screenWidth / 10,
+    padding: EdgeInsets.symmetric(
+    horizontal: 15.w,
+    vertical: 15.h,
+    ),
+    decoration: BoxDecoration(
+    color:Color(0xFF2196F3),
+    borderRadius: BorderRadius.circular(15.r),
+    ),
+    child: const Center(
+    child: Text(
+    'Claim',
+    style: TextStyle(
+    color: Colors.white,
+    ),
+    ),
+    ),
+    ),
+    ),
         InkWell(
           onTap: () {
 
             if (_bsbotController.text.isNotEmpty) {
               if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim"));
-              }
-            }
-
-          },
-          borderRadius: BorderRadius.circular(5.r),
-          child: Container(
-            width: ScreenUtil().screenWidth / 10,
-            padding: EdgeInsets.symmetric(
-              horizontal: 15.w,
-              vertical: 15.h,
-            ),
-            decoration: BoxDecoration(
-              color:Color(0xFF2196F3),
-              borderRadius: BorderRadius.circular(15.r),
-            ),
-            child: const Center(
-              child: Text(
-                'Claim',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-
-            if (_bsbotController.text.isNotEmpty) {
-              if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking"));
+                _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking",poolId:poolId[tappedIndex]));
               }
             }
           },
@@ -1149,6 +1160,39 @@ SizedBox(height:20.h,),
           ),
         ),
       ],
+    );
+  }
+  Widget textd(){
+    return   InkWell(
+      onTap: () {
+
+        if (_bsbotController.text.isNotEmpty) {
+          if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
+            _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim",poolId:poolId[tappedIndex]));
+          }
+        }
+
+      },
+      borderRadius: BorderRadius.circular(5.r),
+      child: Container(
+        width: ScreenUtil().screenWidth / 10,
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.w,
+          vertical: 15.h,
+        ),
+        decoration: BoxDecoration(
+          color:Color(0xFF2196F3),
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: const Center(
+          child: Text(
+            'Claim',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
     );
   }
   Widget text(){

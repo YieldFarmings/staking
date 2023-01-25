@@ -27,11 +27,13 @@ class StakingAmount extends StakingEvent {
   final double amount;
   final String poolAddress;
   final String from;
+  final int poolId;
 
   const StakingAmount({
     required this.amount,
     required this.from,
     required this.poolAddress,
+    required this.poolId,
 
   });
 

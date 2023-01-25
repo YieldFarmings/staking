@@ -34,9 +34,9 @@ class StakingStatus extends StakingState {
   List<Object?> get props => [];
 }
 
-class StakingStatess extends StakingState {
-  final statess;
-  const StakingStatess({required this.statess});
+class Approved extends StakingState {
+  final msg;
+  const Approved({required this.msg});
 
   @override
   List<Object?> get props => [];
