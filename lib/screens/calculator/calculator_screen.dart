@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_tabbar_widget/rounded_tabbar_widget.dart';
 
 import '../../common_widget/bottom_navigation_bar.dart';
+import '../../common_widget/navigation_bar.dart';
 import '../staking/staking_bloc.dart';
 import '../swaping/bloc/swap_bloc.dart';
 import '../swaping/swaping_screen.dart';
@@ -17,7 +18,6 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatingState extends State<CalculatorScreen> {
-  late StakingBloc _stakingBloc;
   String dropdownValue = 'Bsbot';
   String dropdownValues = '30 days';
   double percentage=0.0;
@@ -27,46 +27,18 @@ class _CalculatingState extends State<CalculatorScreen> {
 
   @override
   void initState() {
-    _stakingBloc = StakingBloc(
-      stakingRepository: context.read(),
-    )
-      ..add(StakingCheck());
 
-    _stakingBloc.stream.listen((state) {
-      if (state is StakingConnected) {
-        setState(() {
-          isConnected = true;
-        });
-      }
-      if ( state is StakingError) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-      }
-
-      if (state is StakingLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-      }
-    }
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<StakingBloc>(
-      create: (BuildContext context) => _stakingBloc,
-      child: Scaffold(
-        backgroundColor: const Color(0xFF000222),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment.centerLeft,
-              radius: 0.7.r,
-              colors: const [
-                Color(0xFF102340),
-                Color(0xFF000222),
-              ],
-            ),
-          ),
-          child: Padding(
+    return Scaffold(
+      backgroundColor: const Color(0xffDCE9FF),
+        body:Column(
+            mainAxisAlignment:MainAxisAlignment.start,
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children:[
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 40.h),
             child: Column(
               children: [
@@ -79,7 +51,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        _stakingBloc.add(StakingConnectWallet());
+
                       },
                       borderRadius: BorderRadius.circular(15.r),
                       child: Container(
@@ -88,21 +60,7 @@ class _CalculatingState extends State<CalculatorScreen> {
                           vertical: 15.h,
                         ),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFF3C3D99),
-                              Color(0xFF41275B),
-                            ],
-                          ),
                           borderRadius: BorderRadius.circular(30.r),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Connect Wallet',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -322,8 +280,8 @@ class _CalculatingState extends State<CalculatorScreen> {
     ],
     ),
     ),
+      ],
     ),
-      ),
     );
   }
   Widget text(){

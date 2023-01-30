@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../common_widget/navigation_bar.dart';
+
 class SwapScreen extends StatefulWidget {
   const SwapScreen({Key? key}) : super(key: key);
 
@@ -25,161 +27,70 @@ class _SwapScreenState extends State<SwapScreen> {
   String address = '';
   bool isConnected = false;
 
-  @override
-  void initState() {
-    _stakingBloc = StakingBloc(
-      stakingRepository: context.read(),
-    )..add(StakingCheck());
-
-    _stakingBloc.stream.listen((state) {
-      if (state is StakingConnected) {
-        setState(() {
-          address = state.address;
-          isConnected = true;
-        });
-      }
-
-      if (state is StakingPreviewSuccess) {
-        _usdtController.text = state.previewAmount.toString();
-      }
-
-      if (state is StakingSuccess) {
-        _usdtController.text = '';
-        _bsbotController.text = '';
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-      }
-
-      if (state is StakingError) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-      }
-
-      if (state is StakingLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-      }
-    });
-
-    _bsbotController.addListener(() {
-      if (_bsbotController.text.isNotEmpty) {
-        _swapBloc.add(SwapPreview(amount: double.parse(_bsbotController.text), from: usdtTobsbot ? 'usdt' : 'bsbot'));
-      }
-    });
-
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _stakingBloc = StakingBloc(
+  //     stakingRepository: context.read(),
+  //   )..add(StakingCheck());
+  //
+  //   _stakingBloc.stream.listen((state) {
+  //     if (state is StakingConnected) {
+  //       setState(() {
+  //         address = state.address;
+  //         isConnected = true;
+  //       });
+  //     }
+  //
+  //     if (state is StakingPreviewSuccess) {
+  //       _usdtController.text = state.previewAmount.toString();
+  //     }
+  //
+  //     if (state is StakingSuccess) {
+  //       _usdtController.text = '';
+  //       _bsbotController.text = '';
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+  //     }
+  //
+  //     if (state is StakingError) {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+  //     }
+  //
+  //     if (state is StakingLoading) {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+  //     }
+  //   });
+  //
+  //   _bsbotController.addListener(() {
+  //     if (_bsbotController.text.isNotEmpty) {
+  //       _swapBloc.add(SwapPreview(amount: double.parse(_bsbotController.text), from: usdtTobsbot ? 'usdt' : 'bsbot'));
+  //     }
+  //   });
+  //
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SwapBloc>(
       create: (BuildContext context) => _swapBloc,
       child: Scaffold(
-        backgroundColor: const Color(0xFF000222),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment.centerLeft,
-              radius: 0.7.r,
-              colors: const [
-                Color(0xFF102340),
-                Color(0xFF000222),
-              ],
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 40.h),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/bsbot_logo.png',
-                      scale: 3,
-                    ),
-                    if (address.isEmpty) ...[
-                      InkWell(
-                        onTap: () {
-                          _stakingBloc.add(StakingConnectWallet());
-                        },
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 15.w,
-                            vertical: 15.h,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF3C3D99),
-                                Color(0xFF41275B),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Connect Wallet',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (address.isNotEmpty) ...[
-                      Container(
-                        width: _screenUtil.screenWidth / 10,
-                        height: 43.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                          ),
-                          borderRadius: BorderRadius.circular(14.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 5.h, bottom: 5.w),
-                              child: CircleAvatar(
-                                foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
-                                backgroundColor: Colors.white,
-                              ),
-                            ),
-                            FittedBox(
-                              child: Text(
-                                '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]
-                  ],
-                ),
+        backgroundColor: const Color(0xffDCE9FF),
+        body: Column(
+            mainAxisAlignment:MainAxisAlignment.start,
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children:[
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Center(
+                    child:Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         width: ScreenUtil().screenWidth / 3.5,
                         padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFF162035),
-                              Color(0xFF162035).withOpacity(0.5),
-                              Color(0xFF000222),
-                            ],
-                          ),
+                         color:Colors.white,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +131,7 @@ class _SwapScreenState extends State<SwapScreen> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF090D16),
+                                color: const Color(0xFFF4F4F4),
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Column(
@@ -229,7 +140,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                   Text(
                                     'You Sell',
                                     style: TextStyle(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
                                   ),
@@ -253,7 +164,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                           Text(
                                             usdtTobsbot ? 'USDT' : 'BSBOT',
                                             style: const TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ],
@@ -272,7 +183,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
                                             hintText: '0.0',
-                                            hintStyle: TextStyle(color: Colors.white),
+                                            hintStyle: TextStyle(color: Colors.black),
                                           ),
                                         ),
                                       )
@@ -299,13 +210,13 @@ class _SwapScreenState extends State<SwapScreen> {
                                     });
                                   },
                                   child: CircleAvatar(
-                                    backgroundColor: const Color(0xFF162035),
+                                    backgroundColor:Color(0XFFF4F4F4),
                                     radius: 25.r,
                                     child: Transform.rotate(
                                       angle: pi / 2,
                                       child: Image.asset(
                                         'assets/images/ic_exchange.png',
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         scale: 5,
                                       ),
                                     ),
@@ -319,10 +230,9 @@ class _SwapScreenState extends State<SwapScreen> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                               decoration: BoxDecoration(
-                                color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(10.r),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Color(0XFFF4F4F4),
                                 ),
                               ),
                               child: Column(
@@ -331,7 +241,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                   Text(
                                     'You Get',
                                     style: TextStyle(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
                                   ),
@@ -355,7 +265,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                           Text(
                                             usdtTobsbot ? 'BSBOT' : 'USDT',
                                             style: const TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ],
@@ -374,7 +284,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
                                             hintText: '0.0',
-                                            hintStyle: TextStyle(color: Colors.white),
+                                            hintStyle: TextStyle(color: Colors.black),
                                           ),
                                         ),
                                       )
@@ -404,12 +314,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                   vertical: 15.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFF3C3D99),
-                                      Color(0xFF41275B),
-                                    ],
-                                  ),
+                                  color:Color(0xff2879FF),
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
                                 child: const Center(
@@ -428,11 +333,10 @@ class _SwapScreenState extends State<SwapScreen> {
                     ],
                   ),
                 ),
+                ),
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 }

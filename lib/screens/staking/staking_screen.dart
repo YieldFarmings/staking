@@ -179,6 +179,7 @@ class _StakingState extends State<StakingScreen> {
     );
     return BlocProvider<StakingBloc>(
       create: (BuildContext context) => _stakingBloc,
+      lazy:false,
       child: Scaffold(
         backgroundColor: const Color(0xFF000222),
         body: Container(

@@ -2,6 +2,7 @@ import 'package:bsbot/Repositories/swap_repository.dart';
 import 'package:bsbot/Services/swap_service.dart';
 import 'package:bsbot/screens/dashboard/dashboard_screen.dart';
 import 'package:bsbot/screens/swaping/swaping_screen.dart';
+import 'package:bsbot/walletconnect/connect_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +53,7 @@ class Main extends StatelessWidget {
             ),
           ),
         ],
-        child: BottomNaviagtionBar(),
+        child:ConnectWalletScreen(),
       ),
     );
   }
