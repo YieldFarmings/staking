@@ -29,6 +29,7 @@ class _ConnectWalletState extends State<ConnectWalletScreen> {
   void initState() {
 
     _walletBloc = WalletBloc(
+          walletRepository: context.read(),
     );
 
   _walletBloc.stream.listen((state) {

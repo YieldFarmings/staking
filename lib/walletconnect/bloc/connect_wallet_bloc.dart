@@ -6,16 +6,19 @@ import 'package:bsbot/Repositories/swap_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 
+import '../../Repositories/wallet_repository.dart';
+
 part 'connect_wallet_event.dart';
 part 'connect_wallet_state.dart';
 
 
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
+  final WalletRepository walletRepository;
   late Web3Provider web3provider;
   String address = '';
 
-  WalletBloc() : super(WalletInitial()) {
+  WalletBloc({required this.walletRepository}) : super(WalletInitial()) {
     on<ConnectWallet>(_mapWalletConnectToState);
   }
 

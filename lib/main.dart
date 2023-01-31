@@ -1,5 +1,7 @@
 import 'package:bsbot/Repositories/swap_repository.dart';
+import 'package:bsbot/Repositories/wallet_repository.dart';
 import 'package:bsbot/Services/swap_service.dart';
+import 'package:bsbot/common_widget/navigation_bar.dart';
 import 'package:bsbot/screens/dashboard/dashboard_screen.dart';
 import 'package:bsbot/screens/swaping/swaping_screen.dart';
 import 'package:bsbot/walletconnect/connect_wallet.dart';
@@ -10,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_tabbar_widget/rounded_tabbar_widget.dart';
 
 import 'Repositories/staking_repository.dart';
+import 'Services/connect_wallet_service.dart';
 import 'Services/staking_service.dart';
 import 'common_widget/bottom_navigation_bar.dart';
 
@@ -29,15 +32,15 @@ class Main extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'BSBOT',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            primaryTextTheme: GoogleFonts.poppinsTextTheme(),
-            textTheme: GoogleFonts.poppinsTextTheme(),
-            useMaterial3: true,
-          ),
-          home:child
+            debugShowCheckedModeBanner: false,
+            title: 'BSBOT',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              primaryTextTheme: GoogleFonts.poppinsTextTheme(),
+              textTheme: GoogleFonts.poppinsTextTheme(),
+              useMaterial3: true,
+            ),
+            home:child
         );
       },
       child: MultiRepositoryProvider(
@@ -50,6 +53,11 @@ class Main extends StatelessWidget {
           RepositoryProvider(
             create: (_) => StakingRepository(
               stakingService: StakingService(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => WalletRepository(
+              walletService: WalletService(),
             ),
           ),
         ],

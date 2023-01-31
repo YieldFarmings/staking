@@ -206,19 +206,21 @@ class _DashBoardState extends State<DashBoardScreen> {
           itemBuilder: (BuildContext context, int index) {
             return Container(
                 width: ScreenUtil().screenWidth /5,
-                  child: Column(
+                  child:Row(
+                  children:[
+                      Container(
+                      width: 60.w,
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFD9D9D9),
+                      )),
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(padding:EdgeInsets.only(right:900.w,top:30.h),
                       child:Row(
                         children:[
-                          Container(
-                            width: 60.w,
-                            height: 60.h,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFD9D9D9),
-                                )),
                       SizedBox(width:40.w,),
                       Text(
                         'Xbsbot',
@@ -234,35 +236,34 @@ class _DashBoardState extends State<DashBoardScreen> {
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight:FontWeight.bold,
-                          fontFamily:'Gilroy-Bold',
                           color: Colors.black,
                         ),
                       ),
                     ],
                   ),
             ),
-                      Row(
+                      Padding(padding:EdgeInsets.only(right:856.w),
+                        child:Row(
                       children:[
-                        SizedBox(width:100.w,),
                       Text(
                         'Xbsbot2152m2....827',
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight:FontWeight.bold,
-                          color: Colors.black,
+                          color: Color(0xff909DB2),
+                          ),
                         ),
-                      ),
                         SizedBox(width:220.w,),
                       Text(
                         '02.02.23',
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight:FontWeight.bold,
-                          fontFamily:'Gilroy-Bold',
-                          color: Colors.black,
+                          color: Color(0xff909DB2),
+                          ),
                         ),
-                      ),
             ],
+                      ),
                       ),
             Padding(padding:EdgeInsets.only(right:1000.w),
                       child:Divider(
@@ -271,6 +272,8 @@ class _DashBoardState extends State<DashBoardScreen> {
                       ),
             ),
             ],
+                  ),
+              ],
                   ),
             );
           },
