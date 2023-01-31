@@ -190,7 +190,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height:40.h,),
+                        SizedBox(height:80.h,),
                         Text(
                           'Enter your amount',
                           style: TextStyle(
