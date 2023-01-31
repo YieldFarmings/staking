@@ -94,7 +94,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   Container(
                     width: ScreenUtil().screenWidth / 3.5,
-                    height:ScreenUtil().screenHeight / 1.7,
+                    height:ScreenUtil().screenHeight / 1.9,
                     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
@@ -104,53 +104,42 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'Choose Your assest',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.sp,
-                          ),
-                        ),
+                        // Text(
+                        //   'Choose Your assest',
+                        //   style: TextStyle(
+                        //     color: Colors.black,
+                        //     fontSize: 18.sp,
+                        //   ),
+                        // ),
+                        // SizedBox(height:10.h,),
+                        // Container(
+                        //   width: ScreenUtil().screenWidth / 3.8,
+                        //   padding: EdgeInsets.all(8),
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     color:Color(0xffF4F4F4),
+                        //   ),
+                        //   child:Padding(padding:EdgeInsets.only(
+                        //     right:20.w,
+                        //     left:20.w,
+                        //   ),
+                        //     child:TextField(
+                        //       enabled:false,
+                        //       autofocus: true,
+                        //       textAlign: TextAlign.start,
+                        //       cursorColor: Colors.black,
+                        //       style: const TextStyle(
+                        //         color: Colors.black,
+                        //       ),
+                        //       decoration:InputDecoration(
+                        //         filled:true,
+                        //         fillColor:Color(0xffF4F4F4),
+                        //         hintStyle: TextStyle(color: Colors.white),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(height:10.h,),
-                        Container(
-                          width: ScreenUtil().screenWidth / 3.8,
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color:Color(0xffF4F4F4),
-                          ),
-                          child:Padding(padding:EdgeInsets.only(
-                            right:20.w,
-                            left:20.w,
-                          ),
-                            child:DropdownButton<String>(
-                              dropdownColor:Color(0xff373E65),
-                              isExpanded: true,
-                              alignment:AlignmentDirectional.centerEnd,
-                              underline: SizedBox(),
-                              // Step 3.
-                              value: dropdownValue,
-                              // Step 4.
-                              items: <String>['Bsbot']
-                                  .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child:Text(
-                                    value,
-                                    style: TextStyle(fontSize: 20,color:Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-                              // Step 5.
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(height:40.h,),
                         Text(
                           'Choose your Pull option',
                           style: TextStyle(
@@ -171,12 +160,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             left:20.w,
                           ),
                             child:DropdownButton<String>(
-                              dropdownColor:Color(0xff373E65),
+                              dropdownColor:Colors.white,
                               isExpanded: true,
                               alignment:AlignmentDirectional.centerEnd,
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.white, // <-- SEE HERE
+                                color: Colors.black, // <-- SEE HERE
                               ),
                               underline: SizedBox(),
                               // Step 3.
@@ -196,17 +185,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   dropdownValues = newValue!;
-                                  if(dropdownValues=="30 days")
-                                    percentage=int.parse(_amountController.text)*10/100;
-                                  else if(dropdownValues=="90 days")
-                                    percentage=int.parse(_amountController.text)*25/100;
-                                  else if(dropdownValues=="120 days")
-                                    percentage=int.parse(_amountController.text)*40/100;
-                                  else if(dropdownValues=="180 days")
-                                    percentage=int.parse(_amountController.text)*55/100;
-                                  else if(dropdownValues=="260 days")
-                                    percentage=int.parse(_amountController.text)*75/100;
-
                                 });
                               },
                             ),
@@ -227,9 +205,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             controller:_amountController,
                             autofocus: true,
                             textAlign: TextAlign.start,
-                            cursorColor: Colors.white,
+                            cursorColor: Colors.black,
                             style: const TextStyle(
-                              color: Color(0xffF4F4F4),
+                              color: Colors.black,
                             ),
                             decoration:InputDecoration(
                               border: OutlineInputBorder(
@@ -241,11 +219,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height:45.h,),
+                        SizedBox(height:90.h,),
                         InkWell(
                           onTap: () {
                             setState(() {
                               isVisible=true;
+                              if(dropdownValues=="30 days")
+                                percentage=int.parse(_amountController.text)*10/100;
+                              else if(dropdownValues=="90 days")
+                                percentage=int.parse(_amountController.text)*25/100;
+                              else if(dropdownValues=="120 days")
+                                percentage=int.parse(_amountController.text)*40/100;
+                              else if(dropdownValues=="180 days")
+                                percentage=int.parse(_amountController.text)*55/100;
+                              else if(dropdownValues=="260 days")
+                                percentage=int.parse(_amountController.text)*75/100;
                             });
                           },
                           borderRadius: BorderRadius.circular(5.r),

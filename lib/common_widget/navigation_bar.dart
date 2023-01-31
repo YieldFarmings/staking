@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../screens/dashboard/dashboard_screen.dart';
+import '../screens/dashboard/new_dashboard.dart';
 import '../screens/swaping/swaping_screen.dart';
 import '../walletconnect/connect_wallet.dart';
 
@@ -20,7 +21,7 @@ class _NavigationBarState extends State<NavigationBarTab> {
   final ScreenUtil _screenUtil = ScreenUtil();
   late int tappedIndex;
   final titles = ['Dashboard', 'Swapping', 'Staking', 'Calculator'];
-  static const _pages = <Widget>[
+  final _pages = <Widget>[
     DashBoardScreen(),
     SwapScreen(),
     StakingScreen(),

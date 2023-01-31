@@ -270,7 +270,7 @@ class _StakingState extends State<StakingScreen> {
                                         textAlign: TextAlign.start,
                                         cursorColor: Colors.white,
                                         style: const TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.white,
                                         ),
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
@@ -347,7 +347,7 @@ class _StakingState extends State<StakingScreen> {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  titles[index] + " " + "days  - ",
+                                                  titles[index] + " " + "days - ",
                                                   style: TextStyle(
                                                     fontSize: 22.sp,
                                                     color: Colors.black,
@@ -439,7 +439,7 @@ class _StakingState extends State<StakingScreen> {
 
             if (_bsbotController.text.isNotEmpty) {
               if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-            //    _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim"));
+             //   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim"));
               }
             }
 
@@ -475,7 +475,7 @@ class _StakingState extends State<StakingScreen> {
 
             if (_bsbotController.text.isNotEmpty) {
               if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-             //   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking"));
+            //    _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking"));
               }
             }
           },

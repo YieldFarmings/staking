@@ -91,7 +91,7 @@ class _ConnectWalletState extends State<ConnectWalletScreen> {
                           ),
                           decoration: BoxDecoration(
                             color:Color(0xff000000),
-                            borderRadius: BorderRadius.circular(5.r),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child:Center(
                             child: Text(

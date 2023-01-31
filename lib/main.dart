@@ -3,6 +3,7 @@ import 'package:bsbot/Repositories/wallet_repository.dart';
 import 'package:bsbot/Services/swap_service.dart';
 import 'package:bsbot/common_widget/navigation_bar.dart';
 import 'package:bsbot/screens/dashboard/dashboard_screen.dart';
+import 'package:bsbot/screens/staking/staking_screen.dart';
 import 'package:bsbot/screens/swaping/swaping_screen.dart';
 import 'package:bsbot/walletconnect/connect_wallet.dart';
 import 'package:flutter/material.dart';
@@ -40,25 +41,21 @@ class Main extends StatelessWidget {
               textTheme: GoogleFonts.poppinsTextTheme(),
               useMaterial3: true,
             ),
-            home:child
+            home:child,
         );
       },
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => SwapRepository(
-              swapService: SwapService(),
+            create: (_) => WalletRepository(
+              walletService: WalletService(),
             ),
           ),
           RepositoryProvider(
             create: (_) => StakingRepository(
               stakingService: StakingService(),
             ),
-          ),
-          RepositoryProvider(
-            create: (_) => WalletRepository(
-              walletService: WalletService(),
-            ),
+            child:StakingScreen(),
           ),
         ],
         child:ConnectWalletScreen(),
