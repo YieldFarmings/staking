@@ -449,30 +449,65 @@ class _StakingState extends State<StakingScreen> {
                                   ),
                                 ),
       SizedBox(height:30.h,),
-      InkWell(
-        onTap: () {
-          _stakingBloc.add(StakingConnectWallet());
-        },
-        borderRadius: BorderRadius.circular(5.r),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15.w,
-            vertical: 15.h,
-          ),
-          decoration: BoxDecoration(
-            color:Color(0xff2879FF),
-            borderRadius: BorderRadius.circular(5.r),
-          ),
-          child:Center(
-            child:Text('Connect Wallet',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-      ),
-    ),
-
+        if (address.isEmpty) ...[
+            InkWell(
+              onTap: () {
+                _stakingBloc.add(StakingConnectWallet());
+              },
+              borderRadius: BorderRadius.circular(15.r),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15.w,
+                  vertical: 15.h,
                 ),
+                decoration: BoxDecoration(
+                  color:Color(0xff2879FF),
+                  borderRadius: BorderRadius.circular(5.r),
+                ),
+                child: const Center(
+                  child: Text(
+                    'Connect Wallet',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (address.isNotEmpty) ...[
+            Container(
+              width: _screenUtil.screenWidth / 2,
+              height: 43.h,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color:Color(0xff2879FF),
+                ),
+                color:Color(0xff2879FF),
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.h, bottom: 5.w,left:150.w),
+                    child: CircleAvatar(
+                      foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  FittedBox(
+                    child: Text(
+                      '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
+                      style: TextStyle(
+                        color:Colors.black,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]
 
           ],
                 ),
