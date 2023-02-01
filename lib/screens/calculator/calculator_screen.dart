@@ -223,7 +223,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height:90.h,),
+                        SizedBox(height:60.h,),
                         InkWell(
                           onTap: () {
                             setState(() {

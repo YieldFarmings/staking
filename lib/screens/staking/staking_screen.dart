@@ -29,6 +29,7 @@ class _StakingState extends State<StakingScreen> {
   late int tappedIndex;
   int amounts=0;
   String msg="";
+  int count=0;
   late Dialog leadDialog;
   late Dialog leadDialogs;
   late Dialog leadDialogss;
@@ -401,10 +402,10 @@ class _StakingState extends State<StakingScreen> {
         if (address.isNotEmpty) ...[
                                 InkWell(
                                   onTap: () {
-                                    if(msg=="Transaction Succeed with hash") {
                                       setState(() {
-                                        selected=true;
+                                        count=count+1;
                                       });
+                                      if(msg=="Transaction Succeed with hash") {
                                       showDialog(
                                           context: context,
                                           builder: (
@@ -415,7 +416,7 @@ class _StakingState extends State<StakingScreen> {
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text),from:"Staking"));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text),from:"Staking",count:count));
                                       }
                                     }
                                     else if(_bsbotController.text.isEmpty){

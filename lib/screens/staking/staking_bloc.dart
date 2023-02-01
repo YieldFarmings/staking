@@ -19,7 +19,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     on<StakingConnectWallet>(_mapWalletConnectToState);
     on<StakingCheck>(_checkToState);
     on<StakingAmount>(_mapStakingAmountToState);
-    on<StakingPreview>(_mapStakingPreviewToState);
   }
 
   FutureOr<void> _checkToState(StakingCheck event, Emitter<StakingState> emit) async {}
@@ -88,7 +87,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
    // Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
   //  BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
 
-    if (allowance >= BigInt.from(10 * pow(10, 18))) {
+    if (allowance >= BigInt.from(10 * pow(10, 18)) && event.count>1) {
           emit(const StakingLoading(msg: "Staking.."));
           try {
             emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
@@ -132,7 +131,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
       //  }
 
       }
-    else {
+    else if(event.count==1){
       try {
         emit(const StakingLoading(msg: "Waiting for Approval...."));
         TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount * pow(10, 40))]);
@@ -142,10 +141,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         return;
       }
     }
-  }
-
-  FutureOr<void> _mapStakingPreviewToState(StakingPreview event, Emitter<StakingState> emit) async {
-
   }
 
 Contract factoryContract({required String contractAddress})
