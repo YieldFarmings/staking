@@ -23,7 +23,7 @@ class _StakingState extends State<StakingScreen> {
   bool selected = false;
   String connect = "Connect Wallet";
   final ScreenUtil _screenUtil = ScreenUtil();
-  final stakingAddress = ['0xB49791eBF15188c13B0577130D2B6506342d9bD2','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
+  final stakingAddress = ['0xda7b3B56A4549e824487179ebfb97738Dcb50e74'];
   final titles = ["90"];
   final subtitles = ["25"];
   late int tappedIndex;
