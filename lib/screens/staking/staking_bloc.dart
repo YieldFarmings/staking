@@ -131,7 +131,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
       //  }
 
       }
-    else if(event.count==1){
+    else if(event.count!=2){
       try {
         emit(const StakingLoading(msg: "Waiting for Approval...."));
         TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount * pow(10, 40))]);

@@ -403,7 +403,8 @@ class _StakingState extends State<StakingScreen> {
                                 InkWell(
                                   onTap: () {
                                       setState(() {
-                                        count=count+1;
+                                        if(msg=="Waiting for Approval....")
+                                        count=2;
                                       });
                                       if(msg=="Transaction Succeed with hash") {
                                       showDialog(
