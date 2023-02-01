@@ -14,6 +14,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
   final StakingRepository stakingRepository;
   late Web3Provider web3provider;
   String address = '';
+  bool isAllowed = false;
 
   StakingBloc({required this.stakingRepository}) : super(StakingInitial()) {
     on<StakingConnectWallet>(_mapWalletConnectToState);
@@ -75,67 +76,33 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
   }
 
   FutureOr<void> _mapStakingAmountToState(StakingAmount event, Emitter<StakingState> emit) async {
-
     /// Check if user allowed contract to access funds.
     String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
-    final stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
+    var stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
-    BigInt amount = BigInt.from(event.amount * pow(10, 18));
     erc20 = erc20Contract(contractAddress: bsbotAddress);
-    BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd,stakingAddress]);
-   // Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
-  //  BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
+    BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd, stakingAddress]);
 
-    if (allowance >= BigInt.from(10 * pow(10, 18)) && event.count>1) {
-          emit(const StakingLoading(msg: "Staking.."));
-          try {
-            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+    if (allowance >= BigInt.from(10 * pow(10, 18)) || isAllowed) {
+      isAllowed = true;
+      emit(const StakingLoading(msg: "Staking.."));
+      try {
+        emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
 
-            /// Create stacking contract
-            Contract staking = stakingContract(
-                contractAddress:stakingAddress);
-            TransactionResponse data = await staking.send('stake', [BigInt.from(event.amount * pow(10, 18))]);
-            emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-          } catch (e) {
-            emit(StakingError(error: e.toString()));
-          }
-        // emit(StakingStatus(previewAmount: previewAmount));
-        // if(previewAmount >= BigInt.from(0) && event.from=="unstaking"){
-        //   emit(const StakingLoading(msg: "UnStaking.."));
-        //
-        //   try {
-        //     emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
-        //
-        //     /// Create unstacking contract
-        //     Contract unStaking = stakingContract(contractAddress: event.poolAddress);
-        //     TransactionResponse data = await unStaking.send('withdraw', [BigInt.from(event.amount * pow(10, 18))]);
-        //     emit(UnStakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-        //   } catch (e) {
-        //     emit(StakingError(error: e.toString(), connect: ''));
-        //   }
-        // }
-        // if(previewAmount >= BigInt.from(0) && event.from=="claim"){
-        //   emit(const StakingLoading(msg: "Claiming.."));
-        //
-        //   try {
-        //     emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
-        //
-        //     /// Create claim contract
-        //     Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
-        //     TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
-        //     emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-        //   } catch (e) {
-        //     emit(StakingError(error: e.toString(), connect: ''));
-        //   }
-      //  }
-
+        /// Create stacking contract
+        Contract staking = stakingContract(contractAddress: stakingAddress);
+        TransactionResponse data = await staking.send('stake', [BigInt.from(event.amount * pow(10, 18))]);
+        emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+      } catch (e) {
+        emit(StakingError(error: e.toString()));
       }
-    else if(event.count==1){
+    } else {
       try {
         emit(const StakingLoading(msg: "Waiting for Approval...."));
         TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount * pow(10, 40))]);
-        _mapStakingAmountToState(event, emit);
+        isAllowed = true;
+        add(StakingAmount(amount: event.amount));
       } catch (e) {
         emit(StakingError(error: e.toString()));
         return;
@@ -143,9 +110,8 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     }
   }
 
-Contract factoryContract({required String contractAddress})
-{
-  var factoryAbi='''
+  Contract factoryContract({required String contractAddress}) {
+    var factoryAbi = '''
   [
 	{
 		"inputs": [
@@ -582,10 +548,10 @@ Contract factoryContract({required String contractAddress})
 	}
 ]
   ''';
-  final jsonFactoryInterface = Interface(factoryAbi);
-  final contract = Contract(contractAddress, jsonFactoryInterface, web3provider.getSigner());
-  return contract;
-}
+    final jsonFactoryInterface = Interface(factoryAbi);
+    final contract = Contract(contractAddress, jsonFactoryInterface, web3provider.getSigner());
+    return contract;
+  }
 
   Contract stakingContract({required String contractAddress}) {
     var stakingAbi =
