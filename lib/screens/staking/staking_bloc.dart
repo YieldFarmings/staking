@@ -88,7 +88,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
 
     if (allowance >= BigInt.from(10 * pow(10, 18))) {
-        if(previewAmount <= BigInt.from(0) || event.from=="Staking") {
           emit(const StakingLoading(msg: "Staking.."));
           try {
             emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
@@ -101,36 +100,35 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
           } catch (e) {
             emit(StakingError(error: e.toString(), connect: ''));
           }
-        }
-        emit(StakingStatus(previewAmount: previewAmount));
-        if(previewAmount >= BigInt.from(0) && event.from=="unstaking"){
-          emit(const StakingLoading(msg: "UnStaking.."));
-
-          try {
-            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
-
-            /// Create unstacking contract
-            Contract unStaking = stakingContract(contractAddress: event.poolAddress);
-            TransactionResponse data = await unStaking.send('withdraw', [BigInt.from(event.amount * pow(10, 18))]);
-            emit(UnStakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-          } catch (e) {
-            emit(StakingError(error: e.toString(), connect: ''));
-          }
-        }
-        if(previewAmount >= BigInt.from(0) && event.from=="claim"){
-          emit(const StakingLoading(msg: "Claiming.."));
-
-          try {
-            emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
-
-            /// Create claim contract
-            Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
-            TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
-            emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
-          } catch (e) {
-            emit(StakingError(error: e.toString(), connect: ''));
-          }
-        }
+        // emit(StakingStatus(previewAmount: previewAmount));
+        // if(previewAmount >= BigInt.from(0) && event.from=="unstaking"){
+        //   emit(const StakingLoading(msg: "UnStaking.."));
+        //
+        //   try {
+        //     emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+        //
+        //     /// Create unstacking contract
+        //     Contract unStaking = stakingContract(contractAddress: event.poolAddress);
+        //     TransactionResponse data = await unStaking.send('withdraw', [BigInt.from(event.amount * pow(10, 18))]);
+        //     emit(UnStakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+        //   } catch (e) {
+        //     emit(StakingError(error: e.toString(), connect: ''));
+        //   }
+        // }
+        // if(previewAmount >= BigInt.from(0) && event.from=="claim"){
+        //   emit(const StakingLoading(msg: "Claiming.."));
+        //
+        //   try {
+        //     emit(const StakingLoading(msg: "Waiting for Transaction Confirmation...."));
+        //
+        //     /// Create claim contract
+        //     Contract claim = factoryContract(contractAddress:"0xCc91F6CC61Ca721A60478B1405d0A738A73Af963");
+        //     TransactionResponse data = await claim.send('withdrawRewardToken', [1]);
+        //     emit(ClaimSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
+        //   } catch (e) {
+        //     emit(StakingError(error: e.toString(), connect: ''));
+        //   }
+      //  }
 
       }
     else {
