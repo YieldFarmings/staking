@@ -44,40 +44,10 @@ class _ConnectWalletState extends State<DashBoardScreen> {
                 child:Column(
                   children: [
                     Text(
-                      'Start Staking to See Transaction',
+                      'Coming Soon',
                       style: TextStyle(
                         fontSize:40.sp,
                         color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height:40.h,),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => StakingScreen()),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(5.r),
-                      child: Container(
-                        width: ScreenUtil().screenWidth / 10,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15.w,
-                          vertical: 15.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color:Color(0xff000000),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child:Center(
-                          child: Text(
-                            'Staking',
-                            style: TextStyle(
-                              fontSize:20.sp,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],

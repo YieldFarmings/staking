@@ -25,14 +25,13 @@ class StakingCheck extends StakingEvent {
 
 class StakingAmount extends StakingEvent {
   final double amount;
-  final String poolAddress;
   final String from;
 
 
   const StakingAmount({
     required this.amount,
     required this.from,
-    required this.poolAddress,
+
 
 
   });

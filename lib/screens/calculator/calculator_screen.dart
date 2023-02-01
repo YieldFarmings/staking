@@ -73,7 +73,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return Scaffold(
         backgroundColor: const Color(0xffDCE9FF),
         body: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 40.h),
+    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 130.h),
         child:Column(
           mainAxisAlignment:MainAxisAlignment.center,
           crossAxisAlignment:CrossAxisAlignment.center,
@@ -101,7 +101,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       color:Colors.white,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         // Text(
@@ -140,14 +140,16 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         //   ),
                         // ),
                         SizedBox(height:10.h,),
-                        Text(
-                          'Choose your Pull option',
+                        Padding(padding:EdgeInsets.only(left:10.w),
+                        child:Text(
+                          'Choose your Pull option :',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),
                         ),
-                        SizedBox(height:10.h,),
+                        ),
+                        SizedBox(height:15.h,),
                         Container(
                           width: ScreenUtil().screenWidth / 3.8,
                           padding: EdgeInsets.all(8),
@@ -191,14 +193,16 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                         ),
                         SizedBox(height:80.h,),
-                        Text(
-                          'Enter your amount',
+                        Padding(padding:EdgeInsets.only(left:10.w),
+                            child: Text(
+                          'Enter your amount :',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),
                         ),
-                        SizedBox(height:10.h,),
+                        ),
+                        SizedBox(height:15.h,),
                         SizedBox(
                           width: 495.w,
                           child: TextField(

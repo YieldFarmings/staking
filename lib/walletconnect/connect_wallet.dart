@@ -71,7 +71,7 @@ class _ConnectWalletState extends State<ConnectWalletScreen> {
                     'Start Staking to See Transaction',
                     style: TextStyle(
                       fontSize:40.sp,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
 

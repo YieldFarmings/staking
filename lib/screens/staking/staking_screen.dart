@@ -207,7 +207,7 @@ class _StakingState extends State<StakingScreen> {
       child: Scaffold(
         backgroundColor: const Color(0xffDCE9FF),
         body: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 40.h),
+    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 100.h),
     child:Column(
     mainAxisAlignment:MainAxisAlignment.center,
     crossAxisAlignment:CrossAxisAlignment.center,
@@ -323,7 +323,7 @@ class _StakingState extends State<StakingScreen> {
                                             topRight: Radius.circular(6),
                                             bottomRight: Radius.circular(6),
                                           ),
-                                          color: Color(0xff373E65),
+                                          color:Color(0xff2879FF),
                                         ),
                                         child: const Center(
                                           child: Text(
@@ -360,8 +360,7 @@ class _StakingState extends State<StakingScreen> {
                                       return InkWell(
                                         onTap: () {
                                           setState(() {
-                                            tappedIndex = index;
-                                            selected=false;
+
                                           });
                                         },
                                         child: Container(
@@ -416,7 +415,7 @@ class _StakingState extends State<StakingScreen> {
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text),from:"Staking"));
                                       }
                                     }
                                     else if(_bsbotController.text.isEmpty){

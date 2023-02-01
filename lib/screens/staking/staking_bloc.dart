@@ -47,12 +47,12 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         address = accounts.first;
 
         if (accounts.isNotEmpty) {
-          emit(StakingConnected(address: accounts.first, connect: "Connected"));
+          emit(StakingConnected(address: accounts.first));
         } else if (accounts.isEmpty) {
-          emit(StakingConnected(address: accounts.first, connect: "Connect Wallet"));
+          emit(StakingConnected(address: accounts.first));
         }
       } on EthereumUserRejected {
-        emit(const StakingError(error: 'User closed modal', connect: "Connect Wallet"));
+        emit(const StakingError(error: 'User closed modal'));
       }
     } else {
       try {
@@ -65,12 +65,12 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         address = wc.accounts.first;
 
         if (wc.accounts.isNotEmpty) {
-          emit(StakingConnected(address: wc.accounts.first, connect: "Connected"));
+          emit(StakingConnected(address: wc.accounts.first));
         } else if (wc.accounts.isEmpty) {
-          emit(StakingConnected(address: wc.accounts.first, connect: "Connect Wallet"));
+          emit(StakingConnected(address: wc.accounts.first));
         }
       } catch (e) {
-        emit(const StakingError(error: 'User closed modal', connect: "Wallet Connect"));
+        emit(const StakingError(error: 'User closed modal'));
       }
     }
   }
@@ -79,13 +79,14 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
 
     /// Check if user allowed contract to access funds.
     String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
+    final stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
     BigInt amount = BigInt.from(event.amount * pow(10, 18));
     erc20 = erc20Contract(contractAddress: bsbotAddress);
-    BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd, event.poolAddress]);
-    Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
-    BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
+    BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd,stakingAddress]);
+   // Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);
+  //  BigInt previewAmount = await stakingInfo.call<BigInt>("stakeBalanceOfUser",[userAdd]);
 
     if (allowance >= BigInt.from(10 * pow(10, 18))) {
           emit(const StakingLoading(msg: "Staking.."));
@@ -94,11 +95,11 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
 
             /// Create stacking contract
             Contract staking = stakingContract(
-                contractAddress: event.poolAddress);
+                contractAddress:stakingAddress);
             TransactionResponse data = await staking.send('stake', [BigInt.from(event.amount * pow(10, 18))]);
             emit(StakingSuccess(msg: "Transaction Succeed with hash : ${data.hash}"));
           } catch (e) {
-            emit(StakingError(error: e.toString(), connect: ''));
+            emit(StakingError(error: e.toString()));
           }
         // emit(StakingStatus(previewAmount: previewAmount));
         // if(previewAmount >= BigInt.from(0) && event.from=="unstaking"){
@@ -134,10 +135,10 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     else {
       try {
         emit(const StakingLoading(msg: "Waiting for Approval...."));
-        TransactionResponse data = await erc20.send('approve', [event.poolAddress, BigInt.from(event.amount * pow(10, 40))]);
+        TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount * pow(10, 40))]);
         _mapStakingAmountToState(event, emit);
       } catch (e) {
-        emit(StakingError(error: e.toString(), connect: ''));
+        emit(StakingError(error: e.toString()));
         return;
       }
     }
