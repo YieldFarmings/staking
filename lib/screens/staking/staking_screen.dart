@@ -399,6 +399,7 @@ class _StakingState extends State<StakingScreen> {
                                 SizedBox(
                                   height: 40.h,
                                 ),
+        if (address.isNotEmpty) ...[
                                 InkWell(
                                   onTap: () {
                                     if(msg=="Transaction Succeed with hash") {
@@ -448,6 +449,7 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
+      ],
       SizedBox(height:30.h,),
         if (address.isEmpty) ...[
             InkWell(
