@@ -55,10 +55,9 @@ class Main extends StatelessWidget {
             create: (_) => StakingRepository(
               stakingService: StakingService(),
             ),
-            child:StakingScreen(),
           ),
         ],
-        child:ConnectWalletScreen(),
+        child:NavigationBarTab(),
       ),
     );
   }

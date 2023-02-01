@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/dashboard/new_dashboard.dart';
+import '../screens/staking/staking_bloc.dart';
 import '../screens/swaping/swaping_screen.dart';
 import '../walletconnect/connect_wallet.dart';
 
@@ -21,8 +22,9 @@ class _NavigationBarState extends State<NavigationBarTab> {
   final ScreenUtil _screenUtil = ScreenUtil();
   late int tappedIndex;
   final titles = ['Dashboard', 'Swapping', 'Staking', 'Calculator'];
+  late StakingBloc _stakingBloc;
   final _pages = <Widget>[
-    DashBoardScreen(),
+    ConnectWalletScreen(),
     SwapScreen(),
     StakingScreen(),
     CalculatorScreen(),
@@ -78,38 +80,6 @@ class _NavigationBarState extends State<NavigationBarTab> {
                   ),
                 );
               }
-          ),
-        ),
-        Center(
-          child:Padding(padding:EdgeInsets.only(left:1500.w,top:20.h),
-            child:Container(
-              alignment:AlignmentDirectional.center,
-              width: _screenUtil.screenWidth/13,
-              child: InkWell(
-                onTap: () {
-
-                },
-                borderRadius: BorderRadius.circular(15.r),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 15.w,
-                    vertical: 15.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color:Color(0xff1C4995),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child:Center(
-                    child: Text(
-                      ConnectWalletScreen().isConnected==true ? 'Connect Wallet':'Connected',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ),
         ),
       ],

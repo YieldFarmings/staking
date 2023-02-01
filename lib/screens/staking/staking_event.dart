@@ -5,6 +5,15 @@ abstract class StakingEvent extends Equatable {
 }
 
 class StakingConnectWallet extends StakingEvent {
+
+
+  @override
+  List<Object?> get props => [];
+}
+
+class StakingDisConnectWallet extends StakingEvent {
+
+
   @override
   List<Object?> get props => [];
 }
@@ -19,10 +28,12 @@ class StakingAmount extends StakingEvent {
   final String poolAddress;
   final String from;
 
+
   const StakingAmount({
     required this.amount,
     required this.from,
     required this.poolAddress,
+
 
   });
 

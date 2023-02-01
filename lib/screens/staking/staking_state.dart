@@ -27,16 +27,16 @@ class StakingError extends StakingState {
 }
 
 class StakingStatus extends StakingState {
- final previewAmount;
+  final previewAmount;
   const StakingStatus({required this.previewAmount});
 
   @override
   List<Object?> get props => [];
 }
 
-class StakingStatess extends StakingState {
-  final statess;
-  const StakingStatess({required this.statess});
+class Approved extends StakingState {
+  final msg;
+  const Approved({required this.msg});
 
   @override
   List<Object?> get props => [];
@@ -60,9 +60,9 @@ class StakingPreviewSuccess extends StakingState {
 }
 
 class StakingTotalBalance extends StakingState {
-  final double amount;
+  double amount;
 
-  const StakingTotalBalance({
+  StakingTotalBalance({
     required this.amount,
   });
 

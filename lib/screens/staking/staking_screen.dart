@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../Repositories/staking_repository.dart';
+import '../../Services/staking_service.dart';
+
 class StakingScreen extends StatefulWidget {
   const StakingScreen({Key? key}) : super(key: key);
 
@@ -20,7 +23,7 @@ class _StakingState extends State<StakingScreen> {
   bool selected = false;
   String connect = "Connect Wallet";
   final ScreenUtil _screenUtil = ScreenUtil();
-  final stakingAddress = ['0x3AcB17FE5380B58c1D9edF82469288059A745c01','0xda7b3B56A4549e824487179ebfb97738Dcb50e74','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
+  final stakingAddress = ['0xB49791eBF15188c13B0577130D2B6506342d9bD2','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
   final titles = ["90"];
   final subtitles = ["25"];
   late int tappedIndex;
@@ -29,80 +32,79 @@ class _StakingState extends State<StakingScreen> {
   late Dialog leadDialog;
   late Dialog leadDialogs;
   late Dialog leadDialogss;
-
+  late Dialog leadDialogsss;
 
 
   final TextEditingController _bsbotController = TextEditingController();
-  // @override
-  // void initState() {
-  //   tappedIndex = 0;
-  //   _stakingBloc = StakingBloc(
-  //     stakingRepository: context.read(),
-  //   )..add(StakingCheck());
-  //
-  //   _stakingBloc.stream.listen((state) {
-  //     if (state is StakingConnected) {
-  //       setState(() {
-  //         address = state.address;
-  //         isConnected = true;
-  //       });
-  //     }
-  //     if (state is StakingPreviewSuccess) {
-  //       _bsbotController.text = state.previewAmount.toString();
-  //     }
-  //     if (state is StakingSuccess) {
-  //       setState(() {
-  //         selected=true;
-  //         msg=state.msg;
-  //       });
-  //       textf();
-  //       showDialog(
-  //           context: context,
-  //           builder: (
-  //               BuildContext context) => leadDialog);
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //     if (state is UnStakingSuccess) {
-  //       setState(() {
-  //         msg=state.msg;
-  //       });
-  //       showDialog(
-  //           context: context,
-  //           builder: (
-  //               BuildContext context) => leadDialogs);
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //     if (state is ClaimSuccess) {
-  //       setState(() {
-  //         msg=state.msg;
-  //       });
-  //       showDialog(
-  //           context: context,
-  //           builder: (
-  //               BuildContext context) => leadDialogss);
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //     if (state is StakingError) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-  //     }
-  //
-  //     if (state is StakingLoading) {
-  //       setState(() {
-  //         msg=state.msg;
-  //       });
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //     if (state is StakingStatus) {
-  //       amounts = state.previewAmount;
-  //     }
-  //   });
-  //   _bsbotController.addListener(() {
-  //     if (_bsbotController.text.isNotEmpty) {
-  //       _stakingBloc.add(StakingPreview(amount: double.parse(_bsbotController.text), from: 'bsbot'));
-  //     }
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    tappedIndex = 0;
+    _stakingBloc = StakingBloc(
+      stakingRepository: context.read(),
+    )..add(StakingCheck());
+
+    _stakingBloc.stream.listen((state) {
+      if (state is StakingConnected) {
+        setState(() {
+          address = state.address;
+          isConnected = true;
+        });
+      }
+      if (state is StakingPreviewSuccess) {
+        _bsbotController.text = state.previewAmount.toString();
+      }
+      if (state is StakingSuccess) {
+        setState(() {
+          selected=true;
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialog);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is UnStakingSuccess) {
+        setState(() {
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialogs);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is ClaimSuccess) {
+        setState(() {
+          msg=state.msg;
+        });
+        showDialog(
+            context: context,
+            builder: (
+                BuildContext context) => leadDialogss);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is StakingError) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+      }
+
+      if (state is StakingLoading) {
+        setState(() {
+          msg=state.msg;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+      if (state is StakingStatus) {
+        amounts = state.previewAmount;
+      }
+    });
+    _bsbotController.addListener(() {
+      if (_bsbotController.text.isNotEmpty) {
+        _stakingBloc.add(StakingPreview(amount: double.parse(_bsbotController.text), from: 'bsbot'));
+      }
+    });
+    super.initState();
+  }
 
 
 
@@ -177,7 +179,32 @@ class _StakingState extends State<StakingScreen> {
         ),
       ),
     );
-    return Scaffold(
+    leadDialogsss = Dialog(
+      child: Container(
+        height: 200.0,
+        width: 360.0,
+        color: Colors.purpleAccent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text('PLease Enter Amount',
+                style:
+                TextStyle(color: Colors.black, fontSize: 22.0),
+              ),
+            ),
+            TextButton(onPressed:(){
+              Navigator.of(context).pop();
+
+            }, child:Text('Close',style:TextStyle(color:Colors.white,fontSize:20),))
+          ],
+        ),
+      ),
+    );
+    return BlocProvider<StakingBloc>(
+      create: (BuildContext context) => _stakingBloc,
+      child: Scaffold(
         backgroundColor: const Color(0xffDCE9FF),
         body: Padding(
     padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 40.h),
@@ -200,7 +227,7 @@ class _StakingState extends State<StakingScreen> {
     children: [
     Container(
     width: ScreenUtil().screenWidth / 3.5,
-    height:ScreenUtil().screenHeight / 1.9,
+    height:ScreenUtil().screenHeight / 1.6,
     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
     decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(20.r),
@@ -268,9 +295,9 @@ class _StakingState extends State<StakingScreen> {
                                     },
                                         controller: _bsbotController,
                                         textAlign: TextAlign.start,
-                                        cursorColor: Colors.white,
+                                        cursorColor: Colors.black,
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.black,
                                         ),
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
@@ -347,7 +374,7 @@ class _StakingState extends State<StakingScreen> {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  titles[index] + " " + "days - ",
+                                                  titles[index] + " " + "days  - ",
                                                   style: TextStyle(
                                                     fontSize: 22.sp,
                                                     color: Colors.black,
@@ -388,9 +415,19 @@ class _StakingState extends State<StakingScreen> {
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                    //    _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"Staking"));
                                       }
                                     }
+                                    else if(_bsbotController.text.isEmpty){
+                                      showDialog(
+                                          context: context,
+                                          builder: (
+                                              BuildContext context)
+                                          =>
+                                          leadDialogsss
+                                      );
+                                    }
+
                                   },
                                   borderRadius: BorderRadius.circular(5.r),
                                   child: Container(
@@ -403,7 +440,7 @@ class _StakingState extends State<StakingScreen> {
                                       borderRadius: BorderRadius.circular(5.r),
                                     ),
                                     child:Center(
-                                      child: Text('Stake',
+                                       child:Text('Stake',
                                         style: TextStyle(
                                           color: Colors.white,
                                         ),
@@ -411,101 +448,43 @@ class _StakingState extends State<StakingScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height:20.h,),
-                                if(selected==true)
-                                  textf(),
-                                if(selected==false)
-                                  Container(),
-                              ],
+      SizedBox(height:30.h,),
+      InkWell(
+        onTap: () {
+          _stakingBloc.add(StakingConnectWallet());
+        },
+        borderRadius: BorderRadius.circular(5.r),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 15.w,
+            vertical: 15.h,
+          ),
+          decoration: BoxDecoration(
+            color:Color(0xff2879FF),
+            borderRadius: BorderRadius.circular(5.r),
+          ),
+          child:Center(
+            child:Text('Connect Wallet',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+      ),
+    ),
 
                 ),
 
-            ),
           ],
                 ),
           ),
-    ),
     ],
     ),
       ),
-    );
-  }
-  Widget textf(){
-    return  Row(
-      mainAxisAlignment:MainAxisAlignment.spaceBetween,
-      children:[
-        InkWell(
-          onTap: () {
-
-            if (_bsbotController.text.isNotEmpty) {
-              if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-             //   _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"claim"));
-              }
-            }
-
-          },
-          borderRadius: BorderRadius.circular(5.r),
-          child: Container(
-            width: ScreenUtil().screenWidth / 10,
-            padding: EdgeInsets.symmetric(
-              horizontal: 15.w,
-              vertical: 15.h,
-            ),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF3C3D99),
-                  Color(0xFF41275B),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(5.r),
-            ),
-            child: const Center(
-              child: Text(
-                'Claim',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-
-            if (_bsbotController.text.isNotEmpty) {
-              if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-            //    _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text), poolAddress: stakingAddress[tappedIndex],from:"unstaking"));
-              }
-            }
-          },
-          borderRadius: BorderRadius.circular(5.r),
-          child: Container(
-            width: ScreenUtil().screenWidth / 10,
-            padding: EdgeInsets.symmetric(
-              horizontal: 15.w,
-              vertical: 15.h,
-            ),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF3C3D99),
-                  Color(0xFF41275B),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(5.r),
-            ),
-            child: const Center(
-              child: Text(
-                'UnStake',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
+    ],
+      ),
+    ),
+      ),
     );
   }
 }
