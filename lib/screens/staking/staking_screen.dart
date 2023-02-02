@@ -34,6 +34,7 @@ class _StakingState extends State<StakingScreen> {
   late Dialog leadDialogs;
   late Dialog leadDialogss;
   late Dialog leadDialogsss;
+  double balance=0;
 
 
   final TextEditingController _bsbotController = TextEditingController();
@@ -49,6 +50,11 @@ class _StakingState extends State<StakingScreen> {
         setState(() {
           address = state.address;
           isConnected = true;
+        });
+      }
+      if (state is StakingTotalBalance) {
+        setState(() {
+          balance=state.amount;
         });
       }
       if (state is StakingPreviewSuccess) {
@@ -311,7 +317,9 @@ class _StakingState extends State<StakingScreen> {
                                       ),
                                     ),
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        _bsbotController.text=balance.toString();
+                                      },
                                       borderRadius: BorderRadius.circular(0),
                                       child: Container(
                                         height: 57,

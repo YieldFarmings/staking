@@ -47,6 +47,9 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         address = accounts.first;
 
         if (accounts.isNotEmpty) {
+          BigInt amount= await web3provider.getBalance(address);
+          double amountsd=amount.toDouble();
+          emit(StakingTotalBalance(amount: amountsd));
           emit(StakingConnected(address: accounts.first));
         } else if (accounts.isEmpty) {
           emit(StakingConnected(address: accounts.first));

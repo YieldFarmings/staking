@@ -25,6 +25,8 @@ class ApproveLoading extends StakingState {
   List<Object?> get props => [msg];
 }
 
+
+
 class StakingError extends StakingState {
   final String error;
   const StakingError({required this.error});
