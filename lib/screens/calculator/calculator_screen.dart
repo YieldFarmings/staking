@@ -161,7 +161,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             width: 495.w,
                             child:TextField(
                               enabled:false,
-                              controller:_amountController,
                               autofocus: true,
                               textAlign: TextAlign.start,
                               cursorColor: Colors.black,
