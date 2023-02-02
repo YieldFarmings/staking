@@ -82,7 +82,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
 
     /// Check if user allowed contract to access funds.
     String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
-    final stakingAddress = "0xB49791eBF15188c13B0577130D2B6506342d9bD2";
+    final stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
     BigInt amount = BigInt.from(event.amount * pow(10, 18));
@@ -131,16 +131,16 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         /// Create stacking contract
         Contract staking = stakingContract(contractAddress: stakingAddress);
         TransactionResponse data = await staking.send(
-            'stake', [BigInt.from(event.amount * pow(10, 18))]);
+            'stake', [BigInt.from(event.amount)]);
         emit(StakingSuccess(
             msg: "Transaction Succeed with hash : ${data.hash}"));
       } catch (e) {
-      //  emit(StakingError(error: e.toString()));
+       emit(StakingError(error: e.toString()));
       }
     } else {
       try {
         emit(const StakingLoading(msg: "Waiting for Approval...."));
-        TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount * pow(10, 40))]);
+        TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount)]);
         _mapStakingAmountToState(event, emit);
         isAllowed = true;
         add(StakingAmount(amount: event.amount));
