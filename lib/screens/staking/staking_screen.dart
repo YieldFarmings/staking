@@ -402,10 +402,7 @@ class _StakingState extends State<StakingScreen> {
         if (address.isNotEmpty) ...[
                                 InkWell(
                                   onTap: () {
-                                      setState(() {
-                                        count++;
-                                        selected=true;
-                                      });
+                                      if(msg=="Transaction Succeed with hash") {
                                       showDialog(
                                           context: context,
                                           builder: (
@@ -413,6 +410,7 @@ class _StakingState extends State<StakingScreen> {
                                       =>
                                       leadDialog
                                     );
+                                    }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
                                         _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text)));
