@@ -26,47 +26,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   bool isVisible=false;
 
 
-  // @override
-  // void initState() {
-  //   _stakingBloc = StakingBloc(
-  //     stakingRepository: context.read(),
-  //   )..add(StakingCheck());
-  //
-  //   _stakingBloc.stream.listen((state) {
-  //     if (state is StakingConnected) {
-  //       setState(() {
-  //         address = state.address;
-  //         isConnected = true;
-  //       });
-  //     }
-  //
-  //     if (state is StakingPreviewSuccess) {
-  //       _usdtController.text = state.previewAmount.toString();
-  //     }
-  //
-  //     if (state is StakingSuccess) {
-  //       _usdtController.text = '';
-  //       _bsbotController.text = '';
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //
-  //     if (state is StakingError) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-  //     }
-  //
-  //     if (state is StakingLoading) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //   });
-  //
-  //   _bsbotController.addListener(() {
-  //     if (_bsbotController.text.isNotEmpty) {
-  //       _swapBloc.add(SwapPreview(amount: double.parse(_bsbotController.text), from: usdtTobsbot ? 'usdt' : 'bsbot'));
-  //     }
-  //   });
-  //
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +53,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   Container(
                     width: ScreenUtil().screenWidth / 3.5,
-                    height:ScreenUtil().screenHeight / 1.9,
+                    height:ScreenUtil().screenHeight / 1.8,
                     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),

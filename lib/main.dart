@@ -56,6 +56,11 @@ class Main extends StatelessWidget {
               stakingService: StakingService(),
             ),
           ),
+          RepositoryProvider(
+            create: (_) => SwapRepository(
+              swapService: SwapService(),
+            ),
+          ),
         ],
         child:NavigationBarTab(),
       ),

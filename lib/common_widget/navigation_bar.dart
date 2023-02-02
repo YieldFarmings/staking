@@ -25,7 +25,7 @@ class _NavigationBarState extends State<NavigationBarTab> {
   late StakingBloc _stakingBloc;
   final _pages = <Widget>[
     StakingScreen(),
-    DashBoardScreen(),
+    SwapScreen(),
     CalculatorScreen(),
   ];
 

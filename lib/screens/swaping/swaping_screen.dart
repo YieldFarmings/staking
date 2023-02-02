@@ -27,47 +27,49 @@ class _SwapScreenState extends State<SwapScreen> {
   String address = '';
   bool isConnected = false;
 
-  // @override
-  // void initState() {
-  //   _stakingBloc = StakingBloc(
-  //     stakingRepository: context.read(),
-  //   )..add(StakingCheck());
-  //
-  //   _stakingBloc.stream.listen((state) {
-  //     if (state is StakingConnected) {
-  //       setState(() {
-  //         address = state.address;
-  //         isConnected = true;
-  //       });
-  //     }
-  //
-  //     if (state is StakingPreviewSuccess) {
-  //       _usdtController.text = state.previewAmount.toString();
-  //     }
-  //
-  //     if (state is StakingSuccess) {
-  //       _usdtController.text = '';
-  //       _bsbotController.text = '';
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //
-  //     if (state is StakingError) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-  //     }
-  //
-  //     if (state is StakingLoading) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
-  //     }
-  //   });
-  //
-  //   _bsbotController.addListener(() {
-  //     if (_bsbotController.text.isNotEmpty) {
-  //       _swapBloc.add(SwapPreview(amount: double.parse(_bsbotController.text), from: usdtTobsbot ? 'usdt' : 'bsbot'));
-  //     }
-  //   });
-  //
-  //   super.initState();
-  // }
+
+  @override
+  void initState() {
+    _swapBloc = SwapBloc(
+      swapRepository: context.read(),
+    )..add(SwapCheck());
+
+    _swapBloc.stream.listen((state) {
+      if (state is SwapConnected) {
+        setState(() {
+          address = state.address;
+          isConnected = true;
+        });
+      }
+
+      if (state is SwapPreviewSuccess) {
+        _usdtController.text = state.previewAmount.toString();
+      }
+
+      if (state is SwapSuccess) {
+        _usdtController.text = '';
+        _bsbotController.text = '';
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+
+      if (state is SwapError) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+      }
+
+      if (state is SwapLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+      }
+    });
+
+    _bsbotController.addListener(() {
+      if (_bsbotController.text.isNotEmpty) {
+        _swapBloc.add(SwapPreview(amount: double.parse(_bsbotController.text), from: usdtTobsbot ? 'usdt' : 'bsbot'));
+      }
+    });
+
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -176,9 +178,9 @@ class _SwapScreenState extends State<SwapScreen> {
                                           autofocus: true,
                                           enabled: isConnected,
                                           textAlign: TextAlign.end,
-                                          cursorColor: Colors.white,
+                                          cursorColor: Colors.black,
                                           style: const TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ),
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
@@ -327,12 +329,74 @@ class _SwapScreenState extends State<SwapScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(height:20.h,),
+                            if (address.isEmpty) ...[
+                              InkWell(
+                                onTap: () {
+                                  _swapBloc.add(SwapConnectWallet());
+                                },
+                                borderRadius: BorderRadius.circular(15.r),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 15.w,
+                                    vertical: 15.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:Color(0xff2879FF),
+                                    borderRadius: BorderRadius.circular(5.r),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Connect Wallet',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            if (address.isNotEmpty) ...[
+                              Container(
+                                width: _screenUtil.screenWidth / 2,
+                                height: 43.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color:Color(0xff2879FF),
+                                  ),
+                                  color:Color(0xff2879FF),
+                                  borderRadius: BorderRadius.circular(14.r),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 5.h, bottom: 5.w,left:150.w),
+                                      child: CircleAvatar(
+                                        foregroundImage: NetworkImage('https://avatars.dicebear.com/api/jdenticon/${utf8.encode(address.substring(4, 12))}.png'),
+                                        backgroundColor: Colors.white,
+                                      ),
+                                    ),
+                                    FittedBox(
+                                      child: Text(
+                                        '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
+                                        style: TextStyle(
+                                          color:Colors.black,
+                                          fontSize: 16.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
                           ],
                         ),
                       ),
+
                     ],
                   ),
                 ),
+
                 ),
               ],
             ),

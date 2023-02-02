@@ -42,7 +42,7 @@ class SwapBloc extends Bloc<SwapEvent, SwapState> {
           await ethereum!.walletSwitchChain(56);
         } on EthereumUnrecognizedChainException {
           await ethereum!.walletAddChain(
-            chainId: 97,
+            chainId:56,
             chainName: 'Binance',
             nativeCurrency: CurrencyParams(name: 'BNB Smart Chain Testnet', symbol: 'BNB', decimals: 18),
             rpcUrls: ['https://data-seed-prebsc-1-s3.binance.org:8545/'],
@@ -61,7 +61,7 @@ class SwapBloc extends Bloc<SwapEvent, SwapState> {
     } else {
       try {
         //final wc = WalletConnectProvider.fromRpc({97: "https://data-seed-prebsc-2-s2.binance.org:8545"}, chainId: 97);
-        final wc = WalletConnectProvider.fromRpc({97: 'https://data-seed-prebsc-1-s3.binance.org:8545/'}, chainId: 97);
+        final wc = WalletConnectProvider.fromRpc({56: 'https://data-seed-prebsc-1-s3.binance.org:8545/'}, chainId: 56);
         await wc.connect();
         web3provider = Web3Provider.fromWalletConnect(wc);
         address = wc.accounts.first;
