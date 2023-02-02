@@ -17,6 +17,14 @@ class StakingLoading extends StakingState {
   List<Object?> get props => [msg];
 }
 
+class ApproveLoading extends StakingState {
+  final String msg;
+  const ApproveLoading({required this.msg});
+
+  @override
+  List<Object?> get props => [msg];
+}
+
 class StakingError extends StakingState {
   final String error;
   const StakingError({required this.error});
@@ -33,9 +41,9 @@ class StakingStatus extends StakingState {
   List<Object?> get props => [];
 }
 
-class Approved extends StakingState {
-  final msg;
-  const Approved({required this.msg});
+class ApprovedError extends StakingState {
+  final String error;
+  const ApprovedError({required this.error});
 
   @override
   List<Object?> get props => [];

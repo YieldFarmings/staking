@@ -23,7 +23,7 @@ class _StakingState extends State<StakingScreen> {
   bool selected = false;
   String connect = "Connect Wallet";
   final ScreenUtil _screenUtil = ScreenUtil();
-  final stakingAddress = ['0xda7b3B56A4549e824487179ebfb97738Dcb50e74'];
+  final stakingAddress = ['0x3AcB17FE5380B58c1D9edF82469288059A745c01','0xda7b3B56A4549e824487179ebfb97738Dcb50e74','0x50a8c3283289648E1Bf26d05f1DA8F7499E816BB','0x5BFFE04370BEc5B6c62615d91FC3E55d9EC88527','0x561A858AD3Ad7BBBA515e41DDbB0af56124ecefF'];
   final titles = ["90"];
   final subtitles = ["25"];
   late int tappedIndex;
@@ -402,10 +402,6 @@ class _StakingState extends State<StakingScreen> {
         if (address.isNotEmpty) ...[
                                 InkWell(
                                   onTap: () {
-                                      setState(() {
-                                        if(msg=="Waiting for Approval....")
-                                        count=2;
-                                      });
                                       if(msg=="Transaction Succeed with hash") {
                                       showDialog(
                                           context: context,
@@ -417,7 +413,7 @@ class _StakingState extends State<StakingScreen> {
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
-                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text),from:"Staking",count:count));
+                                        _stakingBloc.add(StakingAmount(amount: double.parse(_bsbotController.text)));
                                       }
                                     }
                                     else if(_bsbotController.text.isEmpty){

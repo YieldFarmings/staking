@@ -25,20 +25,33 @@ class StakingCheck extends StakingEvent {
 
 class StakingAmount extends StakingEvent {
   final double amount;
-  final String from;
-  int count;
+
+
 
 
   StakingAmount({
     required this.amount,
-    required this.from,
-     required this.count,
+
 
   });
 
   @override
   List<Object?> get props => [amount];
 }
+
+class ApproveAmount extends StakingEvent {
+  final double amount;
+
+
+  ApproveAmount({
+    required this.amount,
+
+  });
+
+  @override
+  List<Object?> get props => [amount];
+}
+
 
 class StakingPreview extends StakingEvent {
   final double amount;
