@@ -214,16 +214,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           onTap: () {
                             setState(() {
                               isVisible=true;
-                              if(dropdownValues=="30 days")
-                                percentage=int.parse(_amountController.text)*10/100;
-                              else if(dropdownValues=="90 days")
                                 percentage=int.parse(_amountController.text)*25/100;
-                              else if(dropdownValues=="120 days")
-                                percentage=int.parse(_amountController.text)*40/100;
-                              else if(dropdownValues=="180 days")
-                                percentage=int.parse(_amountController.text)*55/100;
-                              else if(dropdownValues=="260 days")
-                                percentage=int.parse(_amountController.text)*75/100;
                             });
                           },
                           borderRadius: BorderRadius.circular(5.r),
