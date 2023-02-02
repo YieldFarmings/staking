@@ -28,7 +28,6 @@ class StakingAmount extends StakingEvent {
 
 
 
-
   StakingAmount({
     required this.amount,
 

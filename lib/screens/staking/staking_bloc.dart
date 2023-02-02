@@ -79,7 +79,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
 
     /// Check if user allowed contract to access funds.
     String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
-    final stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
+    final stakingAddress = "0xB49791eBF15188c13B0577130D2B6506342d9bD2";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
     BigInt amount = BigInt.from(event.amount * pow(10, 18));

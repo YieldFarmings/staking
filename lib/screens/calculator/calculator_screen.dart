@@ -150,48 +150,35 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         ),
                         ),
                         SizedBox(height:15.h,),
-                        Container(
-                          width: ScreenUtil().screenWidth / 3.8,
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color:Color(0xffF4F4F4),
-                          ),
-                          child:Padding(padding:EdgeInsets.only(
-                            right:20.w,
-                            left:20.w,
-                          ),
-                            child:DropdownButton<String>(
-                              dropdownColor:Colors.white,
-                              isExpanded: true,
-                              alignment:AlignmentDirectional.centerEnd,
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.black, // <-- SEE HERE
+                        // Container(
+                        //   width: ScreenUtil().screenWidth / 3.8,
+                        //   padding: EdgeInsets.all(8),
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     color:Color(0xffF4F4F4),
+                        //   ),
+                          SizedBox(
+                            width: 495.w,
+                            child:TextField(
+                              enabled:false,
+                              controller:_amountController,
+                              autofocus: true,
+                              textAlign: TextAlign.start,
+                              cursorColor: Colors.black,
+                              style: const TextStyle(
+                                color: Colors.black,
                               ),
-                              underline: SizedBox(),
-                              // Step 3.
-                              value: dropdownValues,
-                              // Step 4.
-                              items: <String>['30 days', '90 days', '120 days', '180 days','260 days']
-                                  .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child:Text(
-                                    value,
-                                    style: TextStyle(fontSize: 20,color:Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-                              // Step 5.
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValues = newValue!;
-                                });
-                              },
+                              decoration:InputDecoration(
+                                hintText:'90 days',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled:true,
+                                fillColor:Color(0xffF4F4F4),
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
-                        ),
                         SizedBox(height:80.h,),
                         Padding(padding:EdgeInsets.only(left:10.w),
                             child: Text(
