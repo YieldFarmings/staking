@@ -21,11 +21,11 @@ class _NavigationBarState extends State<NavigationBarTab> {
   int _selectedIndex = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
   late int tappedIndex;
-  final titles = ['Swapping', 'Staking', 'Calculator'];
+  final titles = ['Staking', 'Swapping', 'Calculator'];
   late StakingBloc _stakingBloc;
   final _pages = <Widget>[
-    DashBoardScreen(),
     StakingScreen(),
+    DashBoardScreen(),
     CalculatorScreen(),
   ];
 
