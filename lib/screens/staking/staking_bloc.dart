@@ -122,7 +122,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
       //  }
 
     if (allowance >= BigInt.from(10 * pow(10, 18)) || isAllowed) {
-      isAllowed = true;
       emit(const StakingLoading(msg: "Staking.."));
       try {
         emit(const StakingLoading(
@@ -143,7 +142,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
         TransactionResponse data = await erc20.send('approve', [stakingAddress, BigInt.from(event.amount)]);
         _mapStakingAmountToState(event, emit);
         isAllowed = true;
-        add(StakingAmount(amount: event.amount));
+       add(StakingAmount(amount:0));
       } catch (e) {
         emit(StakingError(error: e.toString()));
         return;
