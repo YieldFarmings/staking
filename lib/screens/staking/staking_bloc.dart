@@ -134,7 +134,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
             'stake', [BigInt.from(event.amount)]);
         emit(StakingSuccess(
             msg: "Transaction Succeed with hash : ${data.hash}"));
-        event.amount=0;
       } catch (e) {
       // emit(StakingError(error: e.toString()));
       }
