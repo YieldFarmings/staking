@@ -24,7 +24,7 @@ class StakingCheck extends StakingEvent {
 }
 
 class StakingAmount extends StakingEvent {
-  final double amount;
+  late final double amount;
 
 
 

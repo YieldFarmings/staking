@@ -122,6 +122,7 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
       //  }
 
     if (allowance >= BigInt.from(10 * pow(10, 18)) || isAllowed) {
+      isAllowed = true;
       emit(const StakingLoading(msg: "Staking.."));
       try {
         emit(const StakingLoading(
@@ -133,8 +134,9 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
             'stake', [BigInt.from(event.amount)]);
         emit(StakingSuccess(
             msg: "Transaction Succeed with hash : ${data.hash}"));
+        event.amount=0;
       } catch (e) {
-       emit(StakingError(error: e.toString()));
+      // emit(StakingError(error: e.toString()));
       }
     } else {
       try {
