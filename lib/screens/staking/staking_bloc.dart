@@ -29,14 +29,14 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     if (Ethereum.isSupported) {
       try {
         try {
-          await ethereum!.walletSwitchChain(97);
+          await ethereum!.walletSwitchChain(56);
         } on EthereumUnrecognizedChainException {
           await ethereum!.walletAddChain(
-            chainId: 97,
+            chainId:56,
             chainName: 'Binance',
             nativeCurrency: CurrencyParams(
               name: 'BNB Smart Chain Testnet',
-              symbol: 'tBNB',
+              symbol: 'BNB',
               decimals: 18,
             ),
             rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
@@ -60,8 +60,8 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     } else {
       try {
         final wc = WalletConnectProvider.fromRpc(
-          {97: "https://data-seed-prebsc-1-s1.binance.org:8545/"},
-          chainId: 97,
+          {56: "https://data-seed-prebsc-1-s1.binance.org:8545/"},
+          chainId:56,
         );
         await wc.connect();
         web3provider = Web3Provider.fromWalletConnect(wc);
@@ -81,8 +81,8 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
   FutureOr<void> _mapStakingAmountToState(StakingAmount event, Emitter<StakingState> emit) async {
 
     /// Check if user allowed contract to access funds.
-    String bsbotAddress = "0x678DD16C17A410A50fe23790C421ee931dC37b7D";
-    final stakingAddress = "0xda7b3B56A4549e824487179ebfb97738Dcb50e74";
+    String bsbotAddress = "0x273edfE2A6aA8Dce9A6FEA380C3D518252D7E82B";
+    final stakingAddress = "0x694dde03131a3a0548bbf5CA6eE6DBe8cF7a3B09";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
     BigInt amount = BigInt.from(event.amount * pow(10, 18));

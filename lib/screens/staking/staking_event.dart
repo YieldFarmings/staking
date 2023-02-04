@@ -27,11 +27,8 @@ class StakingAmount extends StakingEvent {
   late final double amount;
 
 
-
-
   StakingAmount({
     required this.amount,
-
 
   });
 
