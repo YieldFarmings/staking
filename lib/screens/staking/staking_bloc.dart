@@ -85,7 +85,6 @@ class StakingBloc extends Bloc<StakingEvent, StakingState> {
     final stakingAddress = "0x694dde03131a3a0548bbf5CA6eE6DBe8cF7a3B09";
     var userAdd = await web3provider.getSigner().getAddress();
     late Contract erc20;
-    BigInt amount = BigInt.from(event.amount * pow(10, 18));
     erc20 = erc20Contract(contractAddress: bsbotAddress);
     BigInt allowance = await erc20.call<BigInt>('allowance', [userAdd,stakingAddress]);
    // Contract stakingInfo = stakingContract(contractAddress: event.poolAddress);

@@ -317,7 +317,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   color:Color(0xff2879FF),
-                                  borderRadius: BorderRadius.circular(10.r),
+                                  borderRadius: BorderRadius.circular(5.r),
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -359,7 +359,7 @@ class _SwapScreenState extends State<SwapScreen> {
                             if (address.isNotEmpty) ...[
                               Container(
                                 width: _screenUtil.screenWidth / 2,
-                                height: 43.h,
+                                height: 50.h,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color:Color(0xff2879FF),

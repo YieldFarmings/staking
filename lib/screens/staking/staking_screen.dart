@@ -485,13 +485,13 @@ class _StakingState extends State<StakingScreen> {
           if (address.isNotEmpty) ...[
             Container(
               width: _screenUtil.screenWidth / 2,
-              height: 43.h,
+              height: 50.h,
               decoration: BoxDecoration(
                 border: Border.all(
                     color:Color(0xff2879FF),
                 ),
                 color:Color(0xff2879FF),
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(5.r),
               ),
               child: Row(
                 children: [
@@ -502,11 +502,12 @@ class _StakingState extends State<StakingScreen> {
                       backgroundColor: Colors.white,
                     ),
                   ),
+                  SizedBox(width:10.w,),
                   FittedBox(
                     child: Text(
                       '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
                       style: TextStyle(
-                        color:Colors.black,
+                        color:Colors.white,
                         fontSize: 16.sp,
                       ),
                     ),

@@ -99,7 +99,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         //   ),
                         // ),
                         SizedBox(height:10.h,),
-                        Padding(padding:EdgeInsets.only(left:10.w),
+                        Padding(padding:EdgeInsets.only(left:5.w),
                         child:Text(
                           'Choose your Pull option :',
                           style: TextStyle(
@@ -138,7 +138,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             ),
                           ),
                         SizedBox(height:80.h,),
-                        Padding(padding:EdgeInsets.only(left:10.w),
+                        Padding(padding:EdgeInsets.only(left:5.w),
                             child: Text(
                           'Enter your amount :',
                           style: TextStyle(
