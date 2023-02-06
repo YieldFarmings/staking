@@ -240,6 +240,7 @@ class _SwapScreenState extends State<SwapScreen> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                               decoration: BoxDecoration(
+                                color: const Color(0xFFF4F4F4),
                                 borderRadius: BorderRadius.circular(10.r),
                                 border: Border.all(
                                   color: Color(0XFFF4F4F4),
