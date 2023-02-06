@@ -87,6 +87,14 @@ class _SwapScreenState extends State<SwapScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Text(
+                        'Swapping',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 50.sp,
+                        ),
+                      ),
+                      SizedBox(height:30.h,),
                       Container(
                         width: ScreenUtil().screenWidth / 3.5,
                         padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),

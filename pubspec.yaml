@@ -44,6 +44,7 @@ dependencies:
   adaptive_screen_flutter: ^0.0.5
   http_client: ^1.5.1
   rounded_tabbar_widget: ^0.0.2
+  quickalert: ^1.0.1
 
 dev_dependencies:
   flutter_test:

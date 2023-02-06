@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../Repositories/staking_repository.dart';
 import '../../Services/staking_service.dart';
@@ -65,10 +67,16 @@ class _StakingState extends State<StakingScreen> {
           selected=true;
           msg=state.msg;
         });
-        showDialog(
-            context: context,
-            builder: (
-                BuildContext context) => leadDialog);
+        // showDialog(
+        //     context: context,
+        //     builder: (
+        //         BuildContext context) => leadDialog);
+      QuickAlert.show(
+        width:500.w,
+          context: context,
+          type: QuickAlertType.success,
+          text: 'Transaction Completed Successfully!',
+        );
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
       }
       if (state is UnStakingSuccess) {
@@ -117,9 +125,10 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     leadDialog = Dialog(
       child: Container(
-        height: 200.0,
+        height: 400.0,
         width: 360.0,
         color: Colors.blue,
         child: Column(
@@ -411,13 +420,18 @@ class _StakingState extends State<StakingScreen> {
                                 InkWell(
                                   onTap: () {
                                       if(msg=="Transaction Succeed with hash") {
-                                      showDialog(
+                                        QuickAlert.show(
                                           context: context,
-                                          builder: (
-                                          BuildContext context)
-                                      =>
-                                      leadDialog
-                                    );
+                                          type: QuickAlertType.success,
+                                          text: 'Transaction Completed Successfully!',
+                                        );
+                                    //   showDialog(
+                                    //       context: context,
+                                    //       builder: (
+                                    //       BuildContext context)
+                                    //   =>
+                                    //   leadDialog
+                                    // );
                                     }
                                     if (_bsbotController.text.isNotEmpty) {
                                       if ((double.tryParse(_bsbotController.text) ?? 0) > 0) {
@@ -425,12 +439,18 @@ class _StakingState extends State<StakingScreen> {
                                       }
                                     }
                                     else if(_bsbotController.text.isEmpty){
-                                      showDialog(
-                                          context: context,
-                                          builder: (
-                                              BuildContext context)
-                                          =>
-                                          leadDialogsss
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (
+                                      //         BuildContext context)
+                                      //     =>
+                                      //     leadDialogsss
+                                      // );
+                                      QuickAlert.show(
+                                        width:500.w,
+                                        context: context,
+                                        type: QuickAlertType.error,
+                                        text: 'Please Enter Amount',
                                       );
                                     }
 
