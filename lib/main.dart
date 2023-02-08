@@ -2,6 +2,7 @@ import 'package:bsbot/Repositories/swap_repository.dart';
 import 'package:bsbot/Repositories/wallet_repository.dart';
 import 'package:bsbot/Services/swap_service.dart';
 import 'package:bsbot/common_widget/navigation_bar.dart';
+import 'package:bsbot/common_widget/screen_size.dart';
 import 'package:bsbot/screens/dashboard/dashboard_screen.dart';
 import 'package:bsbot/screens/staking/staking_screen.dart';
 import 'package:bsbot/screens/swaping/swaping_screen.dart';
@@ -34,7 +35,7 @@ class Main extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'BSBOT',
+            title: 'BSBO',
             theme: ThemeData(
               primarySwatch: Colors.blue,
               primaryTextTheme: GoogleFonts.poppinsTextTheme(),
@@ -62,7 +63,7 @@ class Main extends StatelessWidget {
             ),
           ),
         ],
-        child:NavigationBarTab(),
+        child:Sample(),
       ),
     );
   }

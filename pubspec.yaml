@@ -45,6 +45,9 @@ dependencies:
   http_client: ^1.5.1
   rounded_tabbar_widget: ^0.0.2
   quickalert: ^1.0.1
+  flutter_device_type: ^0.4.0
+  auto_size_text: 3.0.0
+  responsive_builder: ^0.5.0+1
 
 dev_dependencies:
   flutter_test:

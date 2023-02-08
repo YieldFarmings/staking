@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/dashboard/new_dashboard.dart';
 import '../screens/staking/staking_bloc.dart';
@@ -38,9 +39,48 @@ class _NavigationBarState extends State<NavigationBarTab> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      drawer:Drawer(
+        child:ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(''),
+            ),
+            ListTile(
+              title: const Text('Staking'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const StakingScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Swapping'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('Calculator'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
     body:SingleChildScrollView(
-      child:Column(
+      child:
+      Column(
         children: [
       Stack(
       children: [
@@ -69,11 +109,12 @@ class _NavigationBarState extends State<NavigationBarTab> {
                         child:Text(
                           titles[index],
                           style: TextStyle(
-                            fontSize: 15.sp,
+                            fontSize:15,
                             color: tappedIndex == index ? Colors.white : Colors.black,
                           ),
                         ),
-                    ),
+
+                    )
                       ],
                     ),
                   ),

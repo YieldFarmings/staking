@@ -1,0 +1,226 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:bsbot/screens/staking/staking_bloc.dart';
+import 'package:bsbot/screens/swaping/bloc/swap_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../common_widget/navigation_bar.dart';
+
+class  CalculatorScreenMobile extends StatefulWidget {
+  const  CalculatorScreenMobile({Key? key}) : super(key: key);
+
+  @override
+  State< CalculatorScreenMobile> createState() => _CalculatorScreenState();
+}
+
+class _CalculatorScreenState extends State<CalculatorScreenMobile> {
+
+  String dropdownValue = 'Bsbot';
+  String dropdownValues = '30 days';
+  double percentage=0.0;
+  bool isConnected = false;
+  final TextEditingController _amountController = TextEditingController();
+  bool isVisible=false;
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xffDCE9FF),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 130.h),
+        child:Column(
+          mainAxisAlignment:MainAxisAlignment.center,
+          crossAxisAlignment:CrossAxisAlignment.center,
+          children:[
+            Text(
+              'Calculator',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize:30,
+              ),
+            ),
+
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: ScreenUtil().screenWidth /1.2,
+                      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        color:Colors.white,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // Text(
+                          //   'Choose Your assest',
+                          //   style: TextStyle(
+                          //     color: Colors.black,
+                          //     fontSize: 18.sp,
+                          //   ),
+                          // ),
+                          // SizedBox(height:10.h,),
+                          // Container(
+                          //   width: ScreenUtil().screenWidth / 3.8,
+                          //   padding: EdgeInsets.all(8),
+                          //   decoration: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     color:Color(0xffF4F4F4),
+                          //   ),
+                          //   child:Padding(padding:EdgeInsets.only(
+                          //     right:20.w,
+                          //     left:20.w,
+                          //   ),
+                          //     child:TextField(
+                          //       enabled:false,
+                          //       autofocus: true,
+                          //       textAlign: TextAlign.start,
+                          //       cursorColor: Colors.black,
+                          //       style: const TextStyle(
+                          //         color: Colors.black,
+                          //       ),
+                          //       decoration:InputDecoration(
+                          //         filled:true,
+                          //         fillColor:Color(0xffF4F4F4),
+                          //         hintStyle: TextStyle(color: Colors.white),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(height:10.h,),
+                          Padding(padding:EdgeInsets.only(left:5.w),
+                            child:Text(
+                              'Choose your Pull option :',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height:15.h,),
+                          // Container(
+                          //   width: ScreenUtil().screenWidth / 3.8,
+                          //   padding: EdgeInsets.all(8),
+                          //   decoration: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     color:Color(0xffF4F4F4),
+                          //   ),
+                          SizedBox(
+                            width: 2095.w,
+                            child:TextField(
+                              enabled:false,
+                              autofocus: true,
+                              textAlign: TextAlign.start,
+                              cursorColor: Colors.black,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              decoration:InputDecoration(
+                                hintText:'90 days',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled:true,
+                                fillColor:Color(0xffF4F4F4),
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height:80.h,),
+                          Padding(padding:EdgeInsets.only(left:5.w),
+                            child: Text(
+                              'Enter your amount :',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height:15.h,),
+                          SizedBox(
+                            width: 2095.w,
+                            child: TextField(
+                              controller:_amountController,
+                              autofocus: true,
+                              textAlign: TextAlign.start,
+                              cursorColor: Colors.black,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              decoration:InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled:true,
+                                fillColor:Color(0xffF4F4F4),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height:60.h,),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isVisible=true;
+                                percentage=int.parse(_amountController.text)*25/100;
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(5.r),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 15.w,
+                                vertical: 15.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color:Color(0xff2879FF),
+                                borderRadius: BorderRadius.circular(5.r),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Calculate',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height:20.h,),
+                          if(isVisible==true && _amountController.text.isNotEmpty && dropdownValues.isNotEmpty)
+                            text(),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget text(){
+    return Row(
+      mainAxisAlignment:MainAxisAlignment.center,
+      children: [
+        Text('${_amountController.text} bsbot + ${percentage} xbsbot',style: TextStyle(color: Colors.black)),
+      ],
+    );
+  }
+}
+
+
+
+

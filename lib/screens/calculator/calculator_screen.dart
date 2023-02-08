@@ -53,7 +53,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   Container(
                     width: ScreenUtil().screenWidth / 3.5,
-                    height:ScreenUtil().screenHeight / 1.8,
                     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
