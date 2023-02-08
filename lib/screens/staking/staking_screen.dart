@@ -243,6 +243,7 @@ class _StakingState extends State<StakingScreen> {
     children: [
     Container(
     width: ScreenUtil().screenWidth / 3.5,
+    height:ScreenUtil().screenHeight / 1.6,
     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
     decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(20.r),
