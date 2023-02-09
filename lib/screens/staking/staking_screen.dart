@@ -223,7 +223,7 @@ class _StakingState extends State<StakingScreen> {
       child: Scaffold(
         backgroundColor: const Color(0xffDCE9FF),
         body: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 100.h),
+    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 150.h),
     child:Column(
     mainAxisAlignment:MainAxisAlignment.center,
     crossAxisAlignment:CrossAxisAlignment.center,
@@ -231,6 +231,7 @@ class _StakingState extends State<StakingScreen> {
     Text(
     'Staking',
     style: TextStyle(
+      fontFamily:'Gilroy',
     color: Colors.black,
     fontSize: 50.sp,
     ),
@@ -243,7 +244,6 @@ class _StakingState extends State<StakingScreen> {
     children: [
     Container(
     width: ScreenUtil().screenWidth / 3.5,
-    height:ScreenUtil().screenHeight / 1.6,
     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
     decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(20.r),
@@ -255,17 +255,21 @@ class _StakingState extends State<StakingScreen> {
                                 Text(
                                   'STAKE BSBOT',
                                   style: TextStyle(
+                                    fontFamily:'Gilroy',
                                     color: Color(0xff9B9B9B),
-                                    fontSize: 20.sp,
+                                    fontSize: 26.sp,
                                   ),
                                 ),
                                 SizedBox(
                                   height: 20.h,
                                 ),
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
                                   Text(
                                     'Amount',
                                     style: TextStyle(
+                                      fontFamily:'Gilroy',
                                       color: Colors.black,
                                       fontSize: 18.sp,
                                     ),
@@ -274,8 +278,6 @@ class _StakingState extends State<StakingScreen> {
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                Row(
-                                  children: [
                                     // InkWell(
                                     //   onTap: () {},
                                     //   borderRadius: BorderRadius.circular(0),
@@ -302,13 +304,9 @@ class _StakingState extends State<StakingScreen> {
                                     //     ),
                                     //   ),
                                     // ),
-                                    Expanded(
-                                      child: TextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter some text';
-                                      }
-                                    },
+                                    Container(
+                                      height:60.h,
+                                      child: TextField(
                                         controller: _bsbotController,
                                         textAlign: TextAlign.start,
                                         cursorColor: Colors.black,
@@ -316,8 +314,19 @@ class _StakingState extends State<StakingScreen> {
                                           color: Colors.black,
                                         ),
                                         decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(0),
+                                          suffix:TextButton(
+                                              onPressed: () {  _bsbotController.text=balance.toString(); },
+                                              child:Text('Max',  style: TextStyle(
+                                                color: Color(0xffA4A4A4),
+                                                fontSize: 14.sp,
+                                              ),)),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(width: 1, color: Color(0xff2879FF),),
+                                            borderRadius: BorderRadius.circular(7),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(width: 1, color: Color(0xff2879FF)),
+                                            borderRadius: BorderRadius.circular(7),
                                           ),
                                           filled: true,
                                           fillColor: Color(0xffF4F4F4),
@@ -325,36 +334,6 @@ class _StakingState extends State<StakingScreen> {
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        _bsbotController.text=balance.toString();
-                                      },
-                                      borderRadius: BorderRadius.circular(0),
-                                      child: Container(
-                                        height: 57,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 15.w,
-                                          vertical: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(6),
-                                            bottomRight: Radius.circular(6),
-                                          ),
-                                          color:Color(0xff2879FF),
-                                        ),
-                                        child: const Center(
-                                          child: Text(
-                                            'Max',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 360.w, top: 20.h),
                                   child: Text(
@@ -378,14 +357,14 @@ class _StakingState extends State<StakingScreen> {
                                       return InkWell(
                                         onTap: () {
                                           setState(() {
-
+tappedIndex=index;
                                           });
                                         },
                                         child: Container(
                                           width:500.w,
                                           height:10.h,
                                           child: Card(
-                                           // shape: tappedIndex == index ? new RoundedRectangleBorder(side: new BorderSide(color: Colors.purpleAccent, width: 2.0), borderRadius: BorderRadius.circular(4.0)) : new RoundedRectangleBorder(side: new BorderSide(color: Colors.white, width: 2.0), borderRadius: BorderRadius.circular(4.0)),
+                                           shape: tappedIndex == index ? new RoundedRectangleBorder(side: new BorderSide(color: Color(0xff2879FF), width: 1.0), borderRadius: BorderRadius.circular(7.0)) : new RoundedRectangleBorder(side: new BorderSide(color: Colors.white, width: 1.0), borderRadius: BorderRadius.circular(7.0)),
                                             color: Color(0xffF4F4F4),
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -393,7 +372,8 @@ class _StakingState extends State<StakingScreen> {
                                                 Text(
                                                   titles[index] + " " + "days  - ",
                                                   style: TextStyle(
-                                                    fontSize: 22.sp,
+                                                    fontFamily:'Gilroy',
+                                                    fontSize: 30.sp,
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -401,7 +381,8 @@ class _StakingState extends State<StakingScreen> {
                                                 Text(
                                                   subtitles[index] + "% APR",
                                                   style: TextStyle(
-                                                    fontSize: 22.sp,
+                                                    fontFamily:'Gilroy',
+                                                    fontSize: 30.sp,
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -468,6 +449,7 @@ class _StakingState extends State<StakingScreen> {
                                     child:Center(
                                        child:Text('Stake',
                                         style: TextStyle(
+                                          fontFamily:'Gilroy',
                                           color: Colors.white,
                                         ),
                                       ),
@@ -483,18 +465,20 @@ class _StakingState extends State<StakingScreen> {
               },
               borderRadius: BorderRadius.circular(15.r),
               child: Container(
+                height:50.h,
                 padding: EdgeInsets.symmetric(
                   horizontal: 15.w,
                   vertical: 15.h,
                 ),
                 decoration: BoxDecoration(
                   color:Color(0xff2879FF),
-                  borderRadius: BorderRadius.circular(5.r),
+                  borderRadius: BorderRadius.circular(7.r),
                 ),
                 child: const Center(
                   child: Text(
                     'Connect Wallet',
                     style: TextStyle(
+                      fontFamily:'Gilroy',
                       color: Colors.white,
                     ),
                   ),

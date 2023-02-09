@@ -35,7 +35,7 @@ class Main extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'BSBO',
+            title: 'BSBOT',
             theme: ThemeData(
               primarySwatch: Colors.blue,
               primaryTextTheme: GoogleFonts.poppinsTextTheme(),

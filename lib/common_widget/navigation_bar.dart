@@ -41,43 +41,6 @@ class _NavigationBarState extends State<NavigationBarTab> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      drawer:Drawer(
-        child:ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(''),
-            ),
-            ListTile(
-              title: const Text('Staking'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const StakingScreen()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Swapping'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Calculator'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
     body:SingleChildScrollView(
       child:
       Column(
@@ -109,8 +72,9 @@ class _NavigationBarState extends State<NavigationBarTab> {
                         child:Text(
                           titles[index],
                           style: TextStyle(
+                            fontFamily:'Gilroy',
                             fontSize:15,
-                            color: tappedIndex == index ? Colors.white : Colors.black,
+                            color: tappedIndex == index ? Colors.white :Color(0xffA6C8FF),
                           ),
                         ),
 
@@ -121,6 +85,9 @@ class _NavigationBarState extends State<NavigationBarTab> {
                 );
               }
           ),
+        ),
+        Padding(padding:EdgeInsets.only(left:40.w,top:10.h,bottom:10.h),
+        child:Image.asset('assets/images/bsbot_logo.png',height:60.h,),
         ),
       ],
     ),
