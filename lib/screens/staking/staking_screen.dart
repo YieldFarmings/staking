@@ -511,6 +511,7 @@ tappedIndex=index;
                     child: Text(
                       '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
                       style: TextStyle(
+                        fontFamily:'Gilroy',
                         color:Colors.white,
                         fontSize: 16.sp,
                       ),
