@@ -49,9 +49,9 @@ class _NavigationBarState extends State<NavigationBarTab> {
       children: [
         Container(
           width: _screenUtil.screenWidth,
-          height: _screenUtil.screenHeight / 13,
+          height: _screenUtil.screenHeight / 10,
           color: Color(0xff2879FF),
-          child:Padding(padding:EdgeInsets.only(left:120.w),
+          child:Padding(padding:EdgeInsets.only(left:180.w),
           child:ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount:titles.length,
@@ -85,8 +85,8 @@ class _NavigationBarState extends State<NavigationBarTab> {
           ),
         ),
         ),
-        Padding(padding:EdgeInsets.only(left:40.w,top:20.h,bottom:10.h),
-        child:Image.asset('assets/images/bsbot_logo.png',height:50.h,),
+        Padding(padding:EdgeInsets.only(left:80.w,top:28.h,bottom:15.h),
+        child:Image.asset('assets/images/bsbot_logo.png',height:60.h,),
         ),
       ],
     ),
