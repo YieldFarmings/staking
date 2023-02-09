@@ -32,7 +32,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return Scaffold(
         backgroundColor: const Color(0xffDCE9FF),
         body: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 130.h),
+    padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 190.h),
         child:Column(
           mainAxisAlignment:MainAxisAlignment.center,
           crossAxisAlignment:CrossAxisAlignment.center,
@@ -40,6 +40,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
        Text(
               'Calculator',
               style: TextStyle(
+                fontFamily:'Gilroy',
                 color: Colors.black,
                 fontSize: 50.sp,
               ),
@@ -53,7 +54,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   Container(
                     width: ScreenUtil().screenWidth / 3.5,
-                    height:ScreenUtil().screenHeight / 1.8,
                     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 50.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
@@ -103,6 +103,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         child:Text(
                           'Choose your Pull option :',
                           style: TextStyle(
+                            fontFamily:'Gilroy',
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),
@@ -142,6 +143,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             child: Text(
                           'Enter your amount :',
                           style: TextStyle(
+                            fontFamily:'Gilroy',
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),

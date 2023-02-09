@@ -90,6 +90,7 @@ class _SwapScreenState extends State<SwapScreen> {
                       Text(
                         'Swapping',
                         style: TextStyle(
+                          fontFamily:'Gilroy',
                           color: Colors.black,
                           fontSize: 50.sp,
                         ),
