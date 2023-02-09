@@ -264,8 +264,8 @@ class _StakingState extends State<StakingScreen> {
                                   height: 20.h,
                                 ),
                                 Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
+                                      SizedBox(width:4.w,),
                                   Text(
                                     'Amount',
                                     style: TextStyle(
@@ -305,7 +305,7 @@ class _StakingState extends State<StakingScreen> {
                                     //   ),
                                     // ),
                                     Container(
-                                      height:60.h,
+                                      height:50.h,
                                       child: TextField(
                                         controller: _bsbotController,
                                         textAlign: TextAlign.start,

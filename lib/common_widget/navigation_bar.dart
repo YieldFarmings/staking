@@ -51,6 +51,7 @@ class _NavigationBarState extends State<NavigationBarTab> {
           width: _screenUtil.screenWidth,
           height: _screenUtil.screenHeight / 13,
           color: Color(0xff2879FF),
+          child:Padding(padding:EdgeInsets.only(left:120.w),
           child:ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount:titles.length,
@@ -63,11 +64,8 @@ class _NavigationBarState extends State<NavigationBarTab> {
     }
                     );
                         },
-                  child:SizedBox(width:200.w,
                     child:Row(
-                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
                       children:[
-                        SizedBox(width:30.w,),
                     InkWell(
                         child:Text(
                           titles[index],
@@ -78,16 +76,17 @@ class _NavigationBarState extends State<NavigationBarTab> {
                           ),
                         ),
 
-                    )
+                    ),
+                        SizedBox(width:50.w,),
                       ],
                     ),
-                  ),
                 );
               }
           ),
         ),
-        Padding(padding:EdgeInsets.only(left:40.w,top:10.h,bottom:10.h),
-        child:Image.asset('assets/images/bsbot_logo.png',height:60.h,),
+        ),
+        Padding(padding:EdgeInsets.only(left:40.w,top:20.h,bottom:10.h),
+        child:Image.asset('assets/images/bsbot_logo.png',height:50.h,),
         ),
       ],
     ),
