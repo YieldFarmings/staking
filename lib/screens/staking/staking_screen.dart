@@ -506,7 +506,7 @@ tappedIndex=index;
                       backgroundColor: Colors.white,
                     ),
                   ),
-                  SizedBox(width:10.w,),
+                  SizedBox(width:15.w,),
                   FittedBox(
                     child: Text(
                       '${address.substring(0, 8)}.....${address.substring(address.length - 4, address.length)}',
