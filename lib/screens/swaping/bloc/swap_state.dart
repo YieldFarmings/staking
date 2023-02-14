@@ -38,7 +38,7 @@ class SwapPreviewSuccess extends SwapState {
   const SwapPreviewSuccess({required this.previewAmount});
 
   @override
-  List<Object?> get props => [previewAmount];
+  List<Object?> get props => [previewAmount, Random().nextInt(500)];
 }
 
 class SwapSuccess extends SwapState {
